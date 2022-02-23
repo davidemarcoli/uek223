@@ -1,11 +1,8 @@
 package com.example.demo.domain.blogPost;
 
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
@@ -19,12 +16,28 @@ public class BlogPostController {
     private final BlogPostRepository blogPostRepository;
 
     @GetMapping("/getAll")
-    public List<BlogPost> getBlogPosts() {
-        return blogPostRepository.findAll();
+    public ResponseEntity<List<BlogPost>> getBlogPosts() {
+        return ResponseEntity.ok().body(blogPostRepository.findAll());
     }
 
     @GetMapping("/{id}")
-    public BlogPost getBlogPost(@PathVariable UUID id) {
-        return blogPostService.findById(id);
+    public ResponseEntity<BlogPost> getBlogPost(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(blogPostService.findById(id));
+    }
+
+    @PostMapping("/create" )
+    public ResponseEntity<BlogPost> createBlogPost(@RequestBody BlogPost blogPost) {
+        return ResponseEntity.ok().body(blogPostService.create(blogPost));
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<BlogPost> updateBlogPost(@RequestBody BlogPost blogPost, @PathVariable UUID id) {
+        return ResponseEntity.ok().body(blogPostService.update(blogPost, id));
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<BlogPost> deleteBlogPost(@PathVariable UUID id) {
+        blogPostService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }
