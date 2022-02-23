@@ -13,11 +13,18 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BlogPostServiceImpl implements BlogPostService {
 
-    private BlogPostRepository blogPostRepository;
+    private final BlogPostRepository blogPostRepository;
 
     @Override
-    public BlogPost save(BlogPost blogPost) {
-        return blogPostRepository.save(blogPost);
+    public BlogPost create(BlogPost blogPost) {
+        return blogPostRepository.saveAndFlush(blogPost);
+    }
+
+    @Override
+    public BlogPost update(BlogPost blogPost, UUID id) {
+        blogPost.setId(id);
+
+        return blogPostRepository.saveAndFlush(blogPost);
     }
 
     @Override

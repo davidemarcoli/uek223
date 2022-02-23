@@ -4,19 +4,18 @@ import com.example.demo.domain.appUser.User;
 import com.example.demo.domain.appUser.UserService;
 import com.example.demo.domain.authority.Authority;
 import com.example.demo.domain.authority.AuthorityRepository;
+import com.example.demo.domain.blogPost.BlogPost;
+import com.example.demo.domain.blogPost.BlogPostService;
 import com.example.demo.domain.role.Role;
 import com.example.demo.domain.role.RoleRepository;
-import com.example.demo.domain.role.RoleServiceImpl;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Set;
 
 
@@ -28,6 +27,8 @@ class AppStartupRunner implements ApplicationRunner {
     private final UserService userService;
     @Autowired
     private final RoleRepository roleRepository;
+    @Autowired
+    private final BlogPostService blogPostService;
     @Autowired
     private final AuthorityRepository authorityRepository;
 
@@ -46,6 +47,9 @@ class AppStartupRunner implements ApplicationRunner {
 
         User default_user = new User(null, "james", "james.bond@mi6.com", "bond", Set.of(default_role));
         userService.saveUser(default_user);
+
+        BlogPost blogPost = new BlogPost(null, "Climate Change", "Climate Change get's worse, here is what to do:", "Environment", null);
+        blogPostService.create(blogPost);
 
         userService.addRoleToUser(default_user.getUsername(), default_role.getName());
     }
