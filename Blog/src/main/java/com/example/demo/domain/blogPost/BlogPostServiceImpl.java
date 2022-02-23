@@ -1,6 +1,9 @@
 package com.example.demo.domain.blogPost;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -29,6 +32,7 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @Override
     public List<BlogPost> findAll() {
-        return blogPostRepository.findAll();
+        Pageable pageable = PageRequest.of(0, 10, Sort.by("id"));
+        return blogPostRepository.findAll(pageable).getContent();
     }
 }
