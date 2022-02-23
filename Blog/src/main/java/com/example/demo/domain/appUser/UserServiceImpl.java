@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -21,6 +22,7 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
+    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     private final UserRepository userRepository;
@@ -68,6 +70,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new InstanceAlreadyExistsException("User already exists");
         } else {
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         }
     }
