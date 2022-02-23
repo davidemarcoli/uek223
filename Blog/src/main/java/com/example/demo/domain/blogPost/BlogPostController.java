@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,22 +22,22 @@ public class BlogPostController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<BlogPost> getBlogPost(@PathVariable UUID id) {
+    public ResponseEntity<BlogPost> getBlogPost(@Valid @PathVariable UUID id) {
         return ResponseEntity.ok().body(blogPostService.findById(id));
     }
 
     @PostMapping("/create" )
-    public ResponseEntity<BlogPost> createBlogPost(@RequestBody BlogPost blogPost) {
+    public ResponseEntity<BlogPost> createBlogPost(@Valid @RequestBody BlogPost blogPost) {
         return ResponseEntity.ok().body(blogPostService.create(blogPost));
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<BlogPost> updateBlogPost(@RequestBody BlogPost blogPost, @PathVariable UUID id) {
+    public ResponseEntity<BlogPost> updateBlogPost(@Valid @RequestBody BlogPost blogPost, @PathVariable UUID id) {
         return ResponseEntity.ok().body(blogPostService.update(blogPost, id));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<BlogPost> deleteBlogPost(@PathVariable UUID id) {
+    public ResponseEntity<BlogPost> deleteBlogPost(@Valid @PathVariable UUID id) {
         blogPostService.delete(id);
         return ResponseEntity.noContent().build();
     }

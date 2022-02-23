@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Collection;
 import java.util.UUID;
 
-@RestController @RequestMapping("/api")
+@RestController
+@RequestMapping("/api")
 @RequiredArgsConstructor
 public class UserController {
-//    ADD YOUR ENDPOINT MAPPINGS HERE
-private final UserService userService;
+    //    ADD YOUR ENDPOINT MAPPINGS HERE
+    private final UserService userService;
 
     @GetMapping("/")
-    public ResponseEntity<String> HomeTest(){
+    public ResponseEntity<String> HomeTest() {
         return ResponseEntity.ok().body("Hello World");
     }
 
