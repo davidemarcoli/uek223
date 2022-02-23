@@ -33,6 +33,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
     protected void configure(HttpSecurity http) throws Exception {
         http.httpBasic().and()
                 .authorizeRequests()
+                // swagger
+                .antMatchers("/swagger-ui/**").permitAll()
                 .antMatchers("/api/blog-post/getAll").permitAll()
                 .antMatchers("/**").hasRole("DEFAULT")
                 .and()
