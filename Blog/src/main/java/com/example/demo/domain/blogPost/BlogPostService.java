@@ -4,7 +4,8 @@ import java.util.List;
 import java.util.UUID;
 
 public interface BlogPostService {
-    BlogPost save(BlogPost blogPost);
+    BlogPost create(BlogPost blogPost);
+    BlogPost update(BlogPost blogPost, UUID id);
     BlogPost findById(UUID id);
     void delete(UUID id);
     List<BlogPost> findAll();
