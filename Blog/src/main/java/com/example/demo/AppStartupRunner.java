@@ -40,18 +40,30 @@ class AppStartupRunner implements ApplicationRunner {
 //        Authorities
         Authority read_auth = new Authority(null, "READ");
         authorityRepository.save(read_auth);
+        Authority write_auth = new Authority(null, "WRITE");
+        authorityRepository.save(write_auth);
 
 //        Roles
         Role default_role = new Role(null, "DEFAULT", Arrays.asList(read_auth));
         roleRepository.save(default_role);
+        Role admin_role = new Role(null, "ADMIN", Arrays.asList(read_auth, write_auth));
+        roleRepository.save(admin_role);
 
         User default_user = new User(null, "james", "james.bond@mi6.com", "bond", Set.of(default_role));
         userService.saveUser(default_user);
+        User andrin_user = new User(null, "andrin", "andrin.klarer@gmail.com", "klarer", Set.of(default_role));
+        userService.saveUser(andrin_user);
+        User davide_user = new User(null, "davide", "davide@marcoli.ch", "marcoli", Set.of(default_role));
+        userService.saveUser(davide_user);
 
-        BlogPost blogPost = new BlogPost(null, "Climate Change", "Climate Change get's worse, here is what to do:", "Environment", null);
+        BlogPost blogPost = new BlogPost(null, "Climate Change", "Climate Change get's worse, here is what to do:", "Environment", andrin_user);
         blogPostService.create(blogPost);
+        BlogPost blogPost2 = new BlogPost(null, "30km/h in the city", "What are the benefits and the disbenefits of this drastic change?", "traffic", davide_user);
+        blogPostService.create(blogPost2);
 
         userService.addRoleToUser(default_user.getUsername(), default_role.getName());
+        userService.addRoleToUser(andrin_user.getUsername(), admin_role.getName());
+        userService.addRoleToUser(davide_user.getUsername(), default_role.getName());
     }
 }
 
