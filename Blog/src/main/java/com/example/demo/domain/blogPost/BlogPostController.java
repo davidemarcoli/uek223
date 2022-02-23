@@ -15,8 +15,8 @@ import java.util.UUID;
 @RequestMapping("/api/blog-post")
 public class BlogPostController {
 
-    private BlogPostService blogPostService;
-    private BlogPostRepository blogPostRepository;
+    private final BlogPostService blogPostService;
+    private final BlogPostRepository blogPostRepository;
 
     @GetMapping("/getAll")
     public List<BlogPost> getBlogPosts() {
