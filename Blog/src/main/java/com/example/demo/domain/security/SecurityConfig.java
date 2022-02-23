@@ -37,6 +37,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                 .antMatchers("/**").hasRole("DEFAULT")
                 .and()
                 // some more method calls
-                .formLogin();
+                .formLogin()
+                .and().csrf().disable();
     }
  }
