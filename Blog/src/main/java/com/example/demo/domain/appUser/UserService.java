@@ -1,6 +1,7 @@
 package com.example.demo.domain.appUser;
 
 
+import com.example.demo.domain.exceptions.InvalidEmailException;
 import com.example.demo.domain.role.Role;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -10,10 +11,22 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-    User saveUser(User user) throws InstanceAlreadyExistsException;
+    User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException;
+
     Role saveRole(Role role);
+
     void addRoleToUser(String username, String rolename);
+
     User getUser(String username);
+
     Optional<User> findById(UUID id) throws InstanceNotFoundException;
+
     List<User> findAll();
+
+    User save(User user);
+
+    void deleteUser(UUID id) throws InstanceNotFoundException;
+
+    User updateUser(User user, UUID id);
+
 }

@@ -15,14 +15,15 @@ import javax.validation.Valid;
 import java.util.Collection;
 import java.util.UUID;
 
-@RestController @RequestMapping("/api")
+@RestController
+@RequestMapping("/api/user")
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
 
     @GetMapping("/")
-    public ResponseEntity<String> HomeTest(){
+    public ResponseEntity<String> HomeTest() {
         return ResponseEntity.ok().body("Hello World");
     }
 

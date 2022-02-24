@@ -25,25 +25,25 @@ public class BlogPostController {
 
     @Operation(summary = "Retrieves the Blog-Post with the corresponding ID")
     @GetMapping("/{id}")
-    public ResponseEntity<BlogPost> getBlogPost(@PathVariable UUID id) {
+    public ResponseEntity<BlogPost> getBlogPost(@Valid @PathVariable UUID id) {
         return ResponseEntity.ok().body(blogPostService.findById(id));
     }
 
     @Operation(summary = "Needs a BlogPost object to create a new Post")
     @PostMapping("/create" )
-    public ResponseEntity<BlogPost> createBlogPost(@RequestBody BlogPost blogPost) {
+    public ResponseEntity<BlogPost> createBlogPost(@Valid @RequestBody BlogPost blogPost) {
         return ResponseEntity.ok().body(blogPostService.create(blogPost));
     }
 
     @Operation(summary = "Needs a BlogPost and an ID to update an existing Post ")
     @PutMapping("/update/{id}")
-    public ResponseEntity<BlogPost> updateBlogPost(@RequestBody BlogPost blogPost, @PathVariable UUID id) {
+    public ResponseEntity<BlogPost> updateBlogPost(@Valid @RequestBody BlogPost blogPost, @PathVariable UUID id) {
         return ResponseEntity.ok().body(blogPostService.update(blogPost, id));
     }
 
     @Operation(summary = "Deletes the BlogPost with the corresponding ID")
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity<BlogPost> deleteBlogPost(@PathVariable UUID id) {
+    public ResponseEntity<BlogPost> deleteBlogPost(@Valid @PathVariable UUID id) {
         blogPostService.delete(id);
         return ResponseEntity.noContent().build();
     }
