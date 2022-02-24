@@ -5,7 +5,6 @@ import com.example.demo.domain.exceptions.InvalidEmailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -28,29 +27,29 @@ public class UserController {
 
 
     @GetMapping("/getAll")
-    public ResponseEntity<Collection<User>> findAll() {
-        return new ResponseEntity<Collection<User>>(userService.findAll(), HttpStatus.OK);
+    public ResponseEntity<Collection<User>> findAllUsers() {
+        return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<User> findById(@Valid @PathVariable UUID id) throws InstanceNotFoundException {
-        return new ResponseEntity<User>(userService.findById(id).get(), HttpStatus.OK);
+    public ResponseEntity<User> findUserById(@Valid @PathVariable UUID id) throws InstanceNotFoundException {
+        return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
     }
 
     @PostMapping("/")
-    public ResponseEntity<User> create(@Valid @RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
-        return new ResponseEntity<User>(userService.saveUser(user), HttpStatus.CREATED);
+    public ResponseEntity<User> createUser(@Valid @RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
+        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> update(@Valid @RequestBody User user, @Valid @PathVariable UUID id) {
-        return new ResponseEntity<User>(userService.updateUser(user, id), HttpStatus.OK);
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @Valid @PathVariable UUID id) {
+        return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> delete(@Valid @PathVariable UUID id) throws InstanceNotFoundException {
+    public ResponseEntity<User> deleteUser(@Valid @PathVariable UUID id) throws InstanceNotFoundException {
         userService.deleteUser(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler(InstanceAlreadyExistsException.class)
