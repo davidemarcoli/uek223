@@ -1,6 +1,7 @@
 package com.example.demo.domain.appUser;
 
 
+import com.example.demo.domain.exceptions.InvalidEmailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -37,7 +38,7 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<User> create(@Valid @RequestBody User user) throws InstanceAlreadyExistsException {
+    public ResponseEntity<User> create(@Valid @RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
         return new ResponseEntity<User>(userService.saveUser(user), HttpStatus.CREATED);
     }
 
@@ -60,6 +61,11 @@ public class UserController {
     @ExceptionHandler(InstanceNotFoundException.class)
     public ResponseEntity<String> handleInstanceNotFoundException(InstanceNotFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidEmailException.class)
+    public ResponseEntity<String> handleEmailException(InvalidEmailException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
 }
