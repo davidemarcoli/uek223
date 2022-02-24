@@ -42,18 +42,22 @@ class AppStartupRunner implements ApplicationRunner {
         authorityRepository.save(read_auth);
         Authority write_auth = new Authority(null, "WRITE");
         authorityRepository.save(write_auth);
+        Authority userManage_auth = new Authority(null, "CAN_MANAGE_USERS");
+        authorityRepository.save(userManage_auth);
 
 //        Roles
         Role default_role = new Role(null, "DEFAULT", Arrays.asList(read_auth));
         roleRepository.save(default_role);
-        Role admin_role = new Role(null, "ADMIN", Arrays.asList(read_auth, write_auth));
+        Role admin_role = new Role(null, "ADMIN", Arrays.asList(read_auth, write_auth, userManage_auth));
         roleRepository.save(admin_role);
+        Role author_role = new Role(null, "AUTHOR", Arrays.asList(read_auth, write_auth));
+        roleRepository.save(author_role);
 
         User default_user = new User(null, "james", "james.bond@mi6.com", "bond", Set.of(default_role));
         userService.saveUser(default_user);
-        User andrin_user = new User(null, "andrin", "andrin.klarer@gmail.com", "klarer", Set.of(default_role));
+        User andrin_user = new User(null, "andrin", "andrin.klarer@gmail.com", "klarer", Set.of(admin_role));
         userService.saveUser(andrin_user);
-        User davide_user = new User(null, "davide", "davide@marcoli.ch", "marcoli", Set.of(default_role));
+        User davide_user = new User(null, "davide", "davide@marcoli.ch", "marcoli", Set.of(author_role));
         userService.saveUser(davide_user);
 
         BlogPost blogPost = new BlogPost(null, "Climate Change", "Climate Change get's worse, here is what to do:", "Environment", andrin_user);
