@@ -21,4 +21,11 @@ public interface UserService {
     Optional<User> findById(UUID id) throws InstanceNotFoundException;
 
     List<User> findAll();
+
+    User save(User user);
+
+    void deleteUser(UUID id) throws InstanceNotFoundException;
+
+    User updateUser(User user, UUID id);
+
 }
