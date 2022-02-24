@@ -26,17 +26,17 @@ public class BlogPostController {
         return ResponseEntity.ok().body(blogPostService.findById(id));
     }
 
-    @PostMapping("/create" )
+    @PostMapping("/" )
     public ResponseEntity<BlogPost> createBlogPost(@Valid @RequestBody BlogPost blogPost) {
         return ResponseEntity.ok().body(blogPostService.create(blogPost));
     }
 
-    @PutMapping("/update/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<BlogPost> updateBlogPost(@Valid @RequestBody BlogPost blogPost, @PathVariable UUID id) {
         return ResponseEntity.ok().body(blogPostService.update(blogPost, id));
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<BlogPost> deleteBlogPost(@Valid @PathVariable UUID id) {
         blogPostService.delete(id);
         return ResponseEntity.noContent().build();

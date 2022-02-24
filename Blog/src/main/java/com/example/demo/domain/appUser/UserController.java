@@ -2,9 +2,11 @@ package com.example.demo.domain.appUser;
 
 
 import com.example.demo.domain.exceptions.InvalidEmailException;
+import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PostAuthorize;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,6 +23,7 @@ public class UserController {
 
     private final UserService userService;
 
+    @Operation(hidden = true)
     @GetMapping("/")
     public ResponseEntity<String> HomeTest() {
         return ResponseEntity.ok().body("Hello World");
@@ -37,6 +40,7 @@ public class UserController {
         return new ResponseEntity<User>(userService.findById(id).get(), HttpStatus.OK);
     }
 
+    @PostAuthorize("true")
     @PostMapping("/")
     public ResponseEntity<User> create(@Valid @RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
         return new ResponseEntity<User>(userService.saveUser(user), HttpStatus.CREATED);
