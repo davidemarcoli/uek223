@@ -21,13 +21,8 @@ public class UserController {
 
     private final UserService userService;
 
-    @GetMapping("/")
-    public ResponseEntity<String> HomeTest() {
-        return ResponseEntity.ok().body("Hello World");
-    }
-
     @Operation(summary = "Retrieves all users")
-    @GetMapping("/getAll")
+    @GetMapping("/")
     public ResponseEntity<Collection<User>> findAllUsers() {
         return new ResponseEntity<>(userService.findAll(), HttpStatus.OK);
     }

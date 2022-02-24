@@ -22,7 +22,7 @@ public class BlogPostController {
     private final BlogPostMapper blogPostMapper;
 
     @Operation(summary = "Retrieves the first ten Blog-Posts")
-    @GetMapping("/getAll")
+    @GetMapping("/")
     public ResponseEntity<List<BlogPostDTOOnlyTitle>> findAllBlogPosts() {
         return new ResponseEntity<>(blogPostMapper.blogToBlogDTOsOnlyTitle(blogPostService.findAll()), HttpStatus.OK);
     }
