@@ -1,6 +1,7 @@
 package com.example.demo.domain.blogPost;
 
 import com.example.demo.domain.exceptions.NoBlogPostFoundException;
+import com.example.demo.domain.blogPost.dto.BlogPostDTOOnlyTitle;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
@@ -18,12 +19,12 @@ import java.util.UUID;
 public class BlogPostController {
 
     private final BlogPostService blogPostService;
-    private final BlogPostRepository blogPostRepository;
+    private final BlogPostMapper blogPostMapper;
 
     @Operation(summary = "Retrieves the first ten Blog-Posts")
     @GetMapping("/getAll")
-    public ResponseEntity<List<BlogPost>> findAllBlogPosts() {
-        return new ResponseEntity<>(blogPostRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<BlogPostDTOOnlyTitle>> findAllBlogPosts() {
+        return new ResponseEntity<>(blogPostMapper.blogToBlogDTOsOnlyTitle(blogPostService.findAll()), HttpStatus.OK);
     }
 
     @Operation(summary = "Retrieves the Blog-Post with the corresponding ID")
