@@ -2,6 +2,7 @@ package com.example.demo.domain.blogPost;
 
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -19,32 +20,32 @@ public class BlogPostController {
 
     @Operation(summary = "Retrieves the first ten Blog-Posts")
     @GetMapping("/getAll")
-    public ResponseEntity<List<BlogPost>> getBlogPosts() {
-        return ResponseEntity.ok().body(blogPostRepository.findAll());
+    public ResponseEntity<List<BlogPost>> findAllBlogPosts() {
+        return new ResponseEntity<>(blogPostRepository.findAll(), HttpStatus.OK);
     }
 
     @Operation(summary = "Retrieves the Blog-Post with the corresponding ID")
     @GetMapping("/{id}")
-    public ResponseEntity<BlogPost> getBlogPost(@Valid @PathVariable UUID id) {
-        return ResponseEntity.ok().body(blogPostService.findById(id));
+    public ResponseEntity<BlogPost> findBlogPostById(@Valid @PathVariable UUID id) {
+        return new ResponseEntity<>(blogPostService.findById(id), HttpStatus.OK);
     }
 
+    @PostMapping("/" )
     @Operation(summary = "Needs a BlogPost object to create a new Post")
-    @PostMapping("/create" )
     public ResponseEntity<BlogPost> createBlogPost(@Valid @RequestBody BlogPost blogPost) {
-        return ResponseEntity.ok().body(blogPostService.create(blogPost));
+        return new ResponseEntity<>(blogPostService.create(blogPost), HttpStatus.CREATED);
     }
 
+    @PutMapping("/{id}")
     @Operation(summary = "Needs a BlogPost and an ID to update an existing Post ")
-    @PutMapping("/update/{id}")
     public ResponseEntity<BlogPost> updateBlogPost(@Valid @RequestBody BlogPost blogPost, @PathVariable UUID id) {
-        return ResponseEntity.ok().body(blogPostService.update(blogPost, id));
+        return new ResponseEntity<>(blogPostService.update(blogPost, id), HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
     @Operation(summary = "Deletes the BlogPost with the corresponding ID")
-    @DeleteMapping("/delete/{id}")
     public ResponseEntity<BlogPost> deleteBlogPost(@Valid @PathVariable UUID id) {
         blogPostService.delete(id);
-        return ResponseEntity.noContent().build();
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
