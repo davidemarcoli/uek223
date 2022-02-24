@@ -7,6 +7,7 @@ public interface BlogPostService {
     BlogPost create(BlogPost blogPost);
     BlogPost update(BlogPost blogPost, UUID id);
     BlogPost findById(UUID id);
+    List<BlogPost> findByTitle(String title);
     void delete(UUID id);
     List<BlogPost> findAll();
 //    BlogPost update(UUID id, BlogPost blogPost);

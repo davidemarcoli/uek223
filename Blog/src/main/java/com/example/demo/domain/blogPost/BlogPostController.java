@@ -1,7 +1,10 @@
 package com.example.demo.domain.blogPost;
 
+import com.example.demo.domain.exceptions.NoBlogPostFoundException;
+import com.example.demo.domain.blogPost.dto.BlogPostDTOOnlyTitle;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -16,12 +19,12 @@ import java.util.UUID;
 public class BlogPostController {
 
     private final BlogPostService blogPostService;
-    private final BlogPostRepository blogPostRepository;
+    private final BlogPostMapper blogPostMapper;
 
     @Operation(summary = "Retrieves the first ten Blog-Posts")
     @GetMapping("/")
-    public ResponseEntity<List<BlogPost>> findAllBlogPosts() {
-        return new ResponseEntity<>(blogPostRepository.findAll(), HttpStatus.OK);
+    public ResponseEntity<List<BlogPostDTOOnlyTitle>> findAllBlogPosts() {
+        return new ResponseEntity<>(blogPostMapper.blogToBlogDTOsOnlyTitle(blogPostService.findAll()), HttpStatus.OK);
     }
 
     @Operation(summary = "Retrieves the Blog-Post with the corresponding ID")
@@ -30,7 +33,19 @@ public class BlogPostController {
         return new ResponseEntity<>(blogPostService.findById(id), HttpStatus.OK);
     }
 
-    @PostMapping("/" )
+    @Operation(summary = "Retrieves the Blog-Post with the corresponding Title")
+    @GetMapping("/search")
+    public ResponseEntity<List<BlogPost>> getBlogPostByTitle(@Valid @RequestBody String title) {
+
+        List<BlogPost> blogPosts = blogPostService.findByTitle(title);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-Total-Count", String.valueOf(blogPosts.size()));
+
+        return ResponseEntity.ok().headers(headers).body(blogPosts);
+    }
+
+    @PostMapping("/")
     @Operation(summary = "Needs a BlogPost object to create a new Post")
     public ResponseEntity<BlogPost> createBlogPost(@Valid @RequestBody BlogPost blogPost) {
         return new ResponseEntity<>(blogPostService.create(blogPost), HttpStatus.CREATED);
@@ -47,5 +62,10 @@ public class BlogPostController {
     public ResponseEntity<BlogPost> deleteBlogPost(@Valid @PathVariable UUID id) {
         blogPostService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    @ExceptionHandler(NoBlogPostFoundException.class)
+    public ResponseEntity<String> handleBlogPostNotFoundException(NoBlogPostFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 }
