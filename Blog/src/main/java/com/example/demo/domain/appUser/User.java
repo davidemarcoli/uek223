@@ -4,6 +4,8 @@ import com.example.demo.domain.role.Role;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Set;
 import java.util.UUID;
 
@@ -15,8 +17,17 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
+
+    @NotNull
+    @Size(min = 3, max = 20)
     private String username;
+
+    @NotNull
+    @Size(min = 3, max = 255)
     private String email;
+
+    @NotNull
+    @Size(min = 4, max = 255)
     private String password;
 
 
