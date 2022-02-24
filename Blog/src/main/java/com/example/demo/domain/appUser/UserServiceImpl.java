@@ -103,5 +103,24 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.findAll();
     }
 
+    @Override
+    public User save(User user) {
+        return userRepository.save(user);
+    }
+
+    @Override
+    public void deleteUser(UUID id) throws InstanceNotFoundException {
+        if (userRepository.existsById(id)) {
+            userRepository.deleteById(id);
+        } else {
+            throw new InstanceNotFoundException("User not found");
+        }
+    }
+
+    @Override
+    public User updateUser(User user, UUID id) {
+        user.setId(id);
+        return userRepository.save(user);
+    }
 
 }
