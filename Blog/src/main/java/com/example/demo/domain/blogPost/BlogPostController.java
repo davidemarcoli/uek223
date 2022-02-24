@@ -19,7 +19,7 @@ public class BlogPostController {
     private final BlogPostRepository blogPostRepository;
 
     @Operation(summary = "Retrieves the first ten Blog-Posts")
-    @GetMapping("/getAll")
+    @GetMapping("/")
     public ResponseEntity<List<BlogPost>> findAllBlogPosts() {
         return new ResponseEntity<>(blogPostRepository.findAll(), HttpStatus.OK);
     }
