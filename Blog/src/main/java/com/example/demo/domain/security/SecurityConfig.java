@@ -32,7 +32,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.httpBasic().and()
+        http.csrf().disable().httpBasic().and()
                 .authorizeRequests()
                 // swagger
                 .antMatchers("/swagger-ui/**").permitAll()
@@ -40,7 +40,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
                 .antMatchers("/**").hasRole("DEFAULT")
                 .and()
                 // some more method calls
-                .formLogin()
-                .and().csrf().disable();
+                .formLogin();
     }
  }
