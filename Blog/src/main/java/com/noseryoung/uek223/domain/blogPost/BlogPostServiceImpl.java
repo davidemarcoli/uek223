@@ -1,10 +1,15 @@
 package com.noseryoung.uek223.domain.blogPost;
 
+import com.noseryoung.uek223.domain.blogPost.dto.UpdateBlogPostDTO;
 import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
 import com.noseryoung.uek223.domain.utils.LevenshteinDistance;
 import com.noseryoung.uek223.domain.utils.LevenshteinResult;
 import com.noseryoung.uek223.domain.utils.MultiStopwatch;
+import com.noseryoung.uek223.domain.utils.NullAwareBeanUtilsBean;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
+import org.springframework.beans.BeanUtils;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -17,6 +22,8 @@ import java.util.*;
 public class BlogPostServiceImpl implements BlogPostService {
 
     private final BlogPostRepository blogPostRepository;
+    private final BlogPostMapper blogPostMapper;
+    private final NullAwareBeanUtilsBean nullAwareBeanUtilsBean;
 
     @Override
     public BlogPost create(BlogPost blogPost) {
@@ -24,10 +31,15 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @Override
-    public BlogPost update(BlogPost blogPost, UUID id) {
-        blogPost.setId(id);
+    @SneakyThrows
+    public BlogPost update(UpdateBlogPostDTO blogPost, UUID id) {
 
-        return blogPostRepository.saveAndFlush(blogPost);
+        BlogPost newBlogPost = blogPostMapper.updateBlogPostDTOToBlog(blogPost);
+        BlogPost oldBlogPost = blogPostRepository.findById(id).orElseThrow(() -> new NoBlogPostFoundException("No BlogPost found with the given id"));
+
+        nullAwareBeanUtilsBean.copyProperties(oldBlogPost, newBlogPost);
+
+        return blogPostRepository.saveAndFlush(oldBlogPost);
     }
 
     @Override

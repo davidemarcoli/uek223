@@ -33,8 +33,8 @@ public class CategoryController {
     }
 
     @Operation(summary = "Retrieves the Category with the corresponding Name")
-    @GetMapping("/search")
-    public ResponseEntity<List<Category>> getCategoryByTitle(@Valid @RequestBody String name) {
+    @GetMapping("/")
+    public ResponseEntity<List<Category>> getCategoryByTitle(@Valid @RequestParam String name) {
 
         List<Category> categories = categoryService.findByName(name);
 

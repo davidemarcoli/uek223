@@ -1,11 +1,13 @@
 package com.noseryoung.uek223.domain.blogPost;
 
+import com.noseryoung.uek223.domain.blogPost.dto.UpdateBlogPostDTO;
+
 import java.util.List;
 import java.util.UUID;
 
 public interface BlogPostService {
     BlogPost create(BlogPost blogPost);
-    BlogPost update(BlogPost blogPost, UUID id);
+    BlogPost update(UpdateBlogPostDTO blogPost, UUID id);
     BlogPost findById(UUID id);
     List<BlogPost> findByTitle(String title);
     void delete(UUID id);

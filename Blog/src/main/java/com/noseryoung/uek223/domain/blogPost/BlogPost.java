@@ -2,12 +2,10 @@ package com.noseryoung.uek223.domain.blogPost;
 
 import com.noseryoung.uek223.domain.appUser.User;
 import com.noseryoung.uek223.domain.category.Category;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -23,6 +21,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class BlogPost {
 
     @Id
@@ -45,9 +44,11 @@ public class BlogPost {
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     private Set<Category> category;
 
-    @NotNull
     @CreationTimestamp
     private Date createdAt;
+
+    @UpdateTimestamp
+    private Date updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
