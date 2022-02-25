@@ -10,7 +10,7 @@ INSERT INTO public.authority (id,"name") VALUES ('918c4328-185e-4d64-9777-9b8dce
 INSERT INTO public.authority (id,"name") VALUES ('b62328b6-f511-4eed-89f4-ac7cd6eabbab','CAN_RETRIEVE_BLOG');
 INSERT INTO public.authority (id,"name") VALUES ('99672754-c82b-47dd-b56c-2c405eaef6dd','CAN_CREATE_BLOG');
 
-INSERT INTO public."role" (id,"name") VALUES ('5f715e1d-f585-47c5-85db-996deade4f1e','DEFAULT');
+INSERT INTO public."role" (id,"name") VALUES ('5f715e1d-f585-47c5-85db-996deade4f1e','USER');
 INSERT INTO public."role" (id,"name") VALUES ('74f04db8-71a9-4c3b-9fcc-59341c690e92','ADMIN');
 INSERT INTO public."role" (id,"name") VALUES ('0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3','AUTHOR');
 

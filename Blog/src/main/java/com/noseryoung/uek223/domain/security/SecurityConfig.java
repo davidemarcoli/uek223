@@ -3,6 +3,9 @@ package com.noseryoung.uek223.domain.security;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
@@ -11,7 +14,9 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
- @EnableWebSecurity @RequiredArgsConstructor @EnableGlobalMethodSecurity(prePostEnabled = true)
+import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
+
+@EnableWebSecurity @RequiredArgsConstructor @EnableGlobalMethodSecurity(prePostEnabled = true)
 
  public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -29,15 +34,33 @@ import org.springframework.security.crypto.password.PasswordEncoder;
          auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
      }
 
+     @Bean
+     public RoleHierarchy roleHierarchy() {
+         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+         String hierarchy = "ROLE_ADMIN > ROLE_AUTHOR \n ROLE_AUTHOR > ROLE_USER";
+         roleHierarchy.setHierarchy(hierarchy);
+         return roleHierarchy;
+     }
+
+     @Bean
+     public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+         DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+         expressionHandler.setRoleHierarchy(roleHierarchy());
+         return expressionHandler;
+     }
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.csrf().disable().httpBasic().and()
+      http.csrf().disable().httpBasic().and()
                 .authorizeRequests()
                 // swagger
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .antMatchers("/api/blog-post/getAll").permitAll()
-                .antMatchers("/**").hasRole("DEFAULT")
+                .antMatchers("/api/blog-post/**").permitAll()
+                .antMatchers("/api/user/**").permitAll()
+
+
+                .antMatchers("/api/**").hasRole("USER")
                 .and()
                 // some more method calls
                 .formLogin();
