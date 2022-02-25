@@ -83,9 +83,8 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @Override
-    public List<BlogPost> findAll() {
-        // TODO: how to get page number as param
-        Pageable pageable = PageRequest.of(0, 10, Sort.by("title").ascending());
+    public List<BlogPost> findAll(int page, int length) {
+        Pageable pageable = PageRequest.of(page, length, Sort.by("title").ascending());
         return blogPostRepository.findAll(pageable).getContent();
     }
 
