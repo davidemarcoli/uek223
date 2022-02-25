@@ -1,27 +1,26 @@
 package com.noseryoung.uek223.domain.blogPost.dto;
 
-import com.noseryoung.uek223.domain.category.Category;
 import com.noseryoung.uek223.domain.category.dto.CategoryDTOOnlyName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.Set;
 
-@Setter
-@Getter
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogPostDTOPreview {
-    private String title;
-    private String content;
-    private Set<CategoryDTOOnlyName> category;
-    private LocalDateTime createdAt;
-    private LocalDateTime lastUpdatedAt;
+public class UpdateBlogPostDTO {
 
-    public void setContent(String content) {
-        this.content = content.substring(0,30) + "...";
-    }
+    @Size(min = 10, max = 100)
+    private String title;
+
+    @Size(min = 30, max = 65535)
+    private String content;
+
+    private Set<CategoryDTOOnlyName> category;
+
 }

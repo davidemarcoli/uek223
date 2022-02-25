@@ -1,6 +1,7 @@
 package com.noseryoung.uek223.domain.role;
 
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
+import com.noseryoung.uek223.domain.role.dto.UpdateRoleDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,13 +28,13 @@ public class RoleController {
 
     @Operation(summary = "Creates and saves a new role to the database")
     @PostMapping("/")
-    public ResponseEntity<Role> createRole(@Valid @RequestBody Role role) throws InstanceAlreadyExistsException, InvalidEmailException {
+    public ResponseEntity<Role> createRole(@Valid @RequestBody Role role) {
         return new ResponseEntity<>(roleService.saveRole(role), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Updates the existing role corresponding to the UUID and saves it to the database")
     @PutMapping("/{id}")
-    public ResponseEntity<Role> updateRole(@Valid @RequestBody Role role, @Valid @PathVariable UUID id) {
+    public ResponseEntity<Role> updateRole(@Valid @RequestBody UpdateRoleDTO role, @Valid @PathVariable UUID id) {
         return new ResponseEntity<>(roleService.updateRole(role, id), HttpStatus.CREATED);
     }
 

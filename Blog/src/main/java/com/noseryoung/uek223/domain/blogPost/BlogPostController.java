@@ -1,5 +1,6 @@
 package com.noseryoung.uek223.domain.blogPost;
 
+import com.noseryoung.uek223.domain.blogPost.dto.UpdateBlogPostDTO;
 import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
 import com.noseryoung.uek223.domain.blogPost.dto.BlogPostDTOPreview;
 import io.swagger.v3.oas.annotations.Operation;
@@ -34,8 +35,8 @@ public class BlogPostController {
     }
 
     @Operation(summary = "Retrieves blogposts that are similar to the given title")
-    @GetMapping("/search")
-    public ResponseEntity<List<BlogPost>> getBlogPostByTitle(@Valid @RequestBody String title) {
+    @GetMapping("/")
+    public ResponseEntity<List<BlogPost>> getBlogPostByTitle(@Valid @RequestParam String title) {
 
         List<BlogPost> blogPosts = blogPostService.findByTitle(title);
 
@@ -53,7 +54,7 @@ public class BlogPostController {
 
     @PutMapping("/{id}")
     @Operation(summary = "Updates the existing user corresponding to the UUID and saves it to the databse")
-    public ResponseEntity<BlogPost> updateBlogPost(@Valid @RequestBody BlogPost blogPost, @PathVariable UUID id) {
+    public ResponseEntity<BlogPost> updateBlogPost(@Valid @RequestBody UpdateBlogPostDTO blogPost, @PathVariable UUID id) {
         return new ResponseEntity<>(blogPostService.update(blogPost, id), HttpStatus.CREATED);
     }
 
