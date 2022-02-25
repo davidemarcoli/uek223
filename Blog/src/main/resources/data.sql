@@ -45,6 +45,13 @@ INSERT INTO public.users_roles (user_id,role_id) VALUES ('f2e0ea7d-b3ad-4510-a61
 INSERT INTO public.users_roles (user_id,role_id) VALUES ('bce51025-c47f-4777-8bbd-3804778e0255','74f04db8-71a9-4c3b-9fcc-59341c690e92');
 INSERT INTO public.users_roles (user_id,role_id) VALUES ('3ad10bbb-1ffa-4baa-a10a-95ccde9b4452','0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3');
 
-INSERT INTO public.blog_post (id,category,"content",title,user_id) VALUES ('b8ad1d61-8d17-4725-9589-fae3c71207e0','environment','Climate Change get''s worse, here is what to do:','Climate Change','bce51025-c47f-4777-8bbd-3804778e0255');
-INSERT INTO public.blog_post (id,category,"content",title,user_id) VALUES ('54998d7d-c124-45f8-8345-d3fbc3cfbdbd','traffic','What are the benefits and the disbenefits of this drastic change?','30km/h in the city','3ad10bbb-1ffa-4baa-a10a-95ccde9b4452');
-INSERT INTO public.blog_post (id,category,"content",title,user_id) VALUES ('278b22cc-9ecb-481e-941d-456ba33bd5cf','environment','What are the consequences if there''s no climate? Is life in danger?','Without climate no life!','3ad10bbb-1ffa-4baa-a10a-95ccde9b4452');
+INSERT INTO public.category (id, name) VALUES ('b309713c-d688-4877-b393-271a463c5d17', 'environment');
+INSERT INTO public.category (id, name) VALUES ('4bddb2a2-bacd-4baf-9663-36991c0fb437', 'traffic');
+
+INSERT INTO public.blog_post (id,"content",title,created_at,user_id) VALUES ('b8ad1d61-8d17-4725-9589-fae3c71207e0','Climate Change get''s worse, here is what to do:','Climate Change',localtimestamp,'bce51025-c47f-4777-8bbd-3804778e0255');
+INSERT INTO public.blog_post (id,"content",title,created_at,user_id) VALUES ('54998d7d-c124-45f8-8345-d3fbc3cfbdbd','What are the benefits and the disbenefits of this drastic change?','30km/h in the city',localtimestamp,'3ad10bbb-1ffa-4baa-a10a-95ccde9b4452');
+INSERT INTO public.blog_post (id,"content",title,created_at,user_id) VALUES ('278b22cc-9ecb-481e-941d-456ba33bd5cf','What are the consequences if there''s no climate? Is life in danger?','Without climate no life!',localtimestamp,'3ad10bbb-1ffa-4baa-a10a-95ccde9b4452');
+
+INSERT INTO public.blog_post_category (blog_post_id, category_id) VALUES ('b8ad1d61-8d17-4725-9589-fae3c71207e0', 'b309713c-d688-4877-b393-271a463c5d17');
+INSERT INTO public.blog_post_category (blog_post_id, category_id) VALUES ('54998d7d-c124-45f8-8345-d3fbc3cfbdbd', '4bddb2a2-bacd-4baf-9663-36991c0fb437');
+INSERT INTO public.blog_post_category (blog_post_id, category_id) VALUES ('278b22cc-9ecb-481e-941d-456ba33bd5cf', 'b309713c-d688-4877-b393-271a463c5d17');
