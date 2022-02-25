@@ -28,7 +28,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     @Autowired
     private final RoleRepository roleRepository;
-
+    private final PasswordEncoder passwordEncoder;
 
     @Override
 //    This method is used for security authentication, use caution when changing this
@@ -75,7 +75,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new InstanceAlreadyExistsException("User already exists");
         } else {
-            user.setPassword(user.getPassword());
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
             return userRepository.save(user);
         }
     }
