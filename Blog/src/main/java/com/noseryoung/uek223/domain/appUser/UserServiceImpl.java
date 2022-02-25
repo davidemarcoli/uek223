@@ -130,6 +130,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public User updateUser(User user, UUID id) {
         user.setId(id);
+        user.setRoles(userRepository.findById(id).get().getRoles());
         return userRepository.save(user);
     }
 
