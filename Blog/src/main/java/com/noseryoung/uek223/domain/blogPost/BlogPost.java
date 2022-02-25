@@ -44,14 +44,24 @@ public class BlogPost {
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     private Set<Category> category;
 
-    @CreationTimestamp
+//    @CreationTimestamp
     private Date createdAt;
 
-    @UpdateTimestamp
+//    @UpdateTimestamp
     private Date updatedAt;
 
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
     private User author;
+
+    @PrePersist
+    protected void onCreate() {
+        createdAt = new Date();
+    }
+
+    @PreUpdate
+    protected void onUpdate() {
+        updatedAt = new Date();
+    }
 }
