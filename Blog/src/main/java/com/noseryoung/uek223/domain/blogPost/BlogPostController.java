@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -47,18 +48,21 @@ public class BlogPostController {
     }
 
     @PostMapping("/")
+    @PreAuthorize("hasAuthority('CAN_CREATE_BLOG')")
     @Operation(summary = "Creates and saves a new blogpost to the database")
     public ResponseEntity<BlogPost> createBlogPost(@Valid @RequestBody BlogPost blogPost) {
         return new ResponseEntity<>(blogPostService.create(blogPost), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Updates the existing user corresponding to the UUID and saves it to the databse")
+    @PreAuthorize("hasAnyAuthority('CAN_MANAGE_OWN_BLOG, CAN_MANAGE_BLOG') && isAuthenticated()")
+    @Operation(summary = "Updates the existing blogpost corresponding to the UUID and saves it to the database")
     public ResponseEntity<BlogPost> updateBlogPost(@Valid @RequestBody UpdateBlogPostDTO blogPost, @PathVariable UUID id) {
         return new ResponseEntity<>(blogPostService.update(blogPost, id), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('CAN_MANAGE_OWN_BLOG, CAN_MANAGE_BLOG')")
     @Operation(summary = "Deletes the blogpost with the corresponding UUID")
     public ResponseEntity<BlogPost> deleteBlogPost(@Valid @PathVariable UUID id) {
         blogPostService.delete(id);

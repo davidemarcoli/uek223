@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -27,12 +28,14 @@ public class CategoryController {
     }
 
     @Operation(summary = "Retrieves the Category with the corresponding ID")
+    @PreAuthorize("hasRole('AUTHOR')")
     @GetMapping("/{id}")
     public ResponseEntity<Category> findCategoryById(@Valid @PathVariable UUID id) {
         return new ResponseEntity<>(categoryService.findById(id), HttpStatus.OK);
     }
 
     @Operation(summary = "Retrieves the Category with the corresponding Name")
+    @PreAuthorize("hasRole('AUTHOR')")
     @GetMapping("/")
     public ResponseEntity<List<Category>> getCategoryByTitle(@Valid @RequestParam String name) {
 
@@ -46,18 +49,21 @@ public class CategoryController {
 
     @PostMapping("/")
     @Operation(summary = "Needs a Category object to create a new Category")
+    @PreAuthorize("hasRole('AUTHOR')")
     public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) {
         return new ResponseEntity<>(categoryService.create(category), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @Operation(summary = "Needs a Category and an ID to update an existing Category")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> updateCategory(@Valid @RequestBody Category category, @PathVariable UUID id) {
         return new ResponseEntity<>(categoryService.update(category, id), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @Operation(summary = "Deletes the Category with the corresponding ID")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> deleteCategory(@Valid @PathVariable UUID id) {
         categoryService.delete(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
