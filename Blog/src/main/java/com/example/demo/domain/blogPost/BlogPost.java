@@ -27,7 +27,7 @@ public class BlogPost {
     private String title;
 
     @NotNull
-    @Size(min = 10, max = 65535)
+    @Size(min = 30, max = 65535)
     @Type(type = "text")
     private String content;
 
