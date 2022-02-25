@@ -9,6 +9,6 @@ public interface BlogPostService {
     BlogPost findById(UUID id);
     List<BlogPost> findByTitle(String title);
     void delete(UUID id);
-    List<BlogPost> findAll();
+    List<BlogPost> findAll(int page, int length);
 //    BlogPost update(UUID id, BlogPost blogPost);
 }

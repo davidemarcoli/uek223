@@ -22,9 +22,9 @@ public class BlogPostController {
     private final BlogPostMapper blogPostMapper;
 
     @Operation(summary = "Retrieves the first ten blogposts alphabetically ordered")
-    @GetMapping("/")
-    public ResponseEntity<List<BlogPostDTOOnlyTitle>> findAllBlogPosts() {
-        return new ResponseEntity<>(blogPostMapper.blogToBlogDTOsOnlyTitle(blogPostService.findAll()), HttpStatus.OK);
+    @GetMapping("/{page}/{length}")
+    public ResponseEntity<List<BlogPostDTOOnlyTitle>> findAllBlogPosts(@PathVariable int page, @PathVariable int length) {
+        return new ResponseEntity<>(blogPostMapper.blogToBlogDTOsOnlyTitle(blogPostService.findAll(page, length)), HttpStatus.OK);
     }
 
     @Operation(summary = "Retrieves the blogpost with the corresponding UUID")
