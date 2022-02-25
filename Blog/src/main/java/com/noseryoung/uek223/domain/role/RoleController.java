@@ -1,6 +1,6 @@
-package com.example.demo.domain.role;
+package com.noseryoung.uek223.domain.role;
 
-import com.example.demo.domain.exceptions.InvalidEmailException;
+import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
