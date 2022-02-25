@@ -25,7 +25,6 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
-    private final PasswordEncoder passwordEncoder;
 
     @Autowired
     private final UserRepository userRepository;
@@ -78,7 +77,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepository.findByUsername(user.getUsername()) != null) {
             throw new InstanceAlreadyExistsException("User already exists");
         } else {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
+            user.setPassword(user.getPassword());
             return userRepository.save(user);
         }
     }

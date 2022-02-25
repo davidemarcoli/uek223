@@ -37,9 +37,9 @@ INSERT INTO public.role_authorities (role_id,authority_id) VALUES ('0bbda63c-9b0
 INSERT INTO public.role_authorities (role_id,authority_id) VALUES ('0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3','918c4328-185e-4d64-9777-9b8dcef7a5fd');
 INSERT INTO public.role_authorities (role_id,authority_id) VALUES ('0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3','99672754-c82b-47dd-b56c-2c405eaef6dd');
 
-INSERT INTO public.users (id,email,"password",username) VALUES ('f2e0ea7d-b3ad-4510-a611-983eb81306ca','james.bond@mi6.com','bond','james');
-INSERT INTO public.users (id,email,"password",username) VALUES ('bce51025-c47f-4777-8bbd-3804778e0255','andrin.klarer@gmail.com','klarer','andrin');
-INSERT INTO public.users (id,email,"password",username) VALUES ('3ad10bbb-1ffa-4baa-a10a-95ccde9b4452','davide@marcoli.ch','marcoli','davide');
+INSERT INTO public.users (id,email,"password",username) VALUES ('f2e0ea7d-b3ad-4510-a611-983eb81306ca','james.bond@mi6.com','$2a$12$sOFFUCf7HL0Jwuv9XQx.W.UGuDkrGCldNsShwRxC6AlrfhH4pKoZq','james');
+INSERT INTO public.users (id,email,"password",username) VALUES ('bce51025-c47f-4777-8bbd-3804778e0255','andrin.klarer@gmail.com','$2a$12$Snp.XzzzXWHEENckz0CgfOIPoEq3T2uqie4I5Tz4jMoytgfXnfIiO','andrin');
+INSERT INTO public.users (id,email,"password",username) VALUES ('3ad10bbb-1ffa-4baa-a10a-95ccde9b4452','davide@marcoli.ch','$2a$12$GHgpT/gPBUeR7AAhu8j8lesHx7NyEe4L095jk9GbFA.A184zKxsCS','davide');
 
 INSERT INTO public.users_roles (user_id,role_id) VALUES ('f2e0ea7d-b3ad-4510-a611-983eb81306ca','5f715e1d-f585-47c5-85db-996deade4f1e');
 INSERT INTO public.users_roles (user_id,role_id) VALUES ('bce51025-c47f-4777-8bbd-3804778e0255','74f04db8-71a9-4c3b-9fcc-59341c690e92');
