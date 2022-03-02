@@ -1,6 +1,8 @@
 package com.noseryoung.uek223.domain.blogPost;
 
 import com.noseryoung.uek223.domain.blogPost.dto.UpdateBlogPostDTO;
+import com.noseryoung.uek223.domain.exceptions.InvalidObjectException;
+import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
 import com.noseryoung.uek223.domain.blogPost.dto.BlogPostDTOPreview;
 import io.swagger.v3.oas.annotations.Operation;
@@ -51,26 +53,37 @@ public class BlogPostController {
     @PreAuthorize("hasAuthority('CAN_CREATE_BLOG')")
     @Operation(summary = "Creates and saves a new blogpost to the database")
     public ResponseEntity<BlogPost> createBlogPost(@Valid @RequestBody BlogPost blogPost) {
-        return new ResponseEntity<>(blogPostService.create(blogPost), HttpStatus.CREATED);
+        return new ResponseEntity<>(blogPostService.createBlogPost(blogPost), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('CAN_MANAGE_OWN_BLOG, CAN_MANAGE_BLOG') && isAuthenticated()")
     @Operation(summary = "Updates the existing blogpost corresponding to the UUID and saves it to the database")
-    public ResponseEntity<BlogPost> updateBlogPost(@Valid @RequestBody UpdateBlogPostDTO blogPost, @PathVariable UUID id) {
-        return new ResponseEntity<>(blogPostService.update(blogPost, id), HttpStatus.CREATED);
+    public ResponseEntity<BlogPost> updateBlogPost(@Valid @RequestBody UpdateBlogPostDTO blogPost, @PathVariable UUID id) throws NoAccessException, NoBlogPostFoundException, InvalidObjectException {
+        return new ResponseEntity<>(blogPostService.updateBlogPost(blogPost, id), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
     @PreAuthorize("hasAnyAuthority('CAN_MANAGE_OWN_BLOG, CAN_MANAGE_BLOG')")
     @Operation(summary = "Deletes the blogpost with the corresponding UUID")
-    public ResponseEntity<BlogPost> deleteBlogPost(@Valid @PathVariable UUID id) {
-        blogPostService.delete(id);
+    public ResponseEntity<BlogPost> deleteBlogPost(@Valid @PathVariable UUID id) throws NoAccessException, NoBlogPostFoundException {
+        blogPostService.deleteBlogPost(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler(NoBlogPostFoundException.class)
-    public ResponseEntity<String> handleBlogPostNotFoundException(NoBlogPostFoundException e) {
+    public ResponseEntity<String> handleNoBlogPostFoundException(NoBlogPostFoundException e) {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
+    @ExceptionHandler(NoAccessException.class)
+    public ResponseEntity<String> handleNoAccessException(NoAccessException e) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(e.getMessage());
+    }
+
+    @ExceptionHandler(InvalidObjectException.class)
+    public ResponseEntity<String> handleInvalidObjectException(InvalidObjectException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
 }

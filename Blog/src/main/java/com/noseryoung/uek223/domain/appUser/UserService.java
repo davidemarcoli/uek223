@@ -2,6 +2,7 @@ package com.noseryoung.uek223.domain.appUser;
 
 
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
+import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.role.Role;
 
 import javax.management.InstanceAlreadyExistsException;
@@ -17,16 +18,12 @@ public interface UserService {
 
     void addRoleToUser(String username, String rolename);
 
-    User getUser(String username);
-
-    Optional<User> findById(UUID id) throws InstanceNotFoundException;
+    Optional<User> findById(UUID id) throws InstanceNotFoundException, NoAccessException;
 
     List<User> findAll();
 
-    User save(User user);
+    void deleteUser(UUID id) throws InstanceNotFoundException, NoAccessException;
 
-    void deleteUser(UUID id) throws InstanceNotFoundException;
-
-    User updateUser(User user, UUID id);
+    User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException;
 
 }
