@@ -1,6 +1,8 @@
 package com.noseryoung.uek223.domain.appUser;
 
 
+import com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO;
+import com.noseryoung.uek223.domain.blogPost.BlogPostMapper;
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,6 +26,7 @@ import java.util.UUID;
 public class UserController{
 
     private final UserService userService;
+    private final UserMapper userMapper;
 
     @Operation(summary = "Retrieves all users")
     @PreAuthorize("hasAuthority('CAN_RETRIEVE_ALL_USERS')")
@@ -41,8 +44,8 @@ public class UserController{
 
     @Operation(summary = "Creates and saves a new user to the database")
     @PostMapping("/")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) throws InstanceAlreadyExistsException, InvalidEmailException {
-        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.CREATED);
+    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserDTO user) throws InstanceAlreadyExistsException, InvalidEmailException {
+        return new ResponseEntity<>((userService.saveUser(user)), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Updates the existing user corresponding to the UUID and saves it to the database")
