@@ -1,7 +1,7 @@
 package com.noseryoung.uek223.domain.appuser;
 
 
-import com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO;
+import com.noseryoung.uek223.domain.appuser.dto.CreateUserDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.role.Role;
@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-    User saveUser(com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO user) throws InstanceAlreadyExistsException, InvalidEmailException;
+    User saveUser(CreateUserDTO user) throws InstanceAlreadyExistsException, InvalidEmailException;
 
     Role saveRole(Role role);
 

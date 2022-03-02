@@ -1,6 +1,7 @@
 package com.noseryoung.uek223.domain.appuser;
 
 
+import com.noseryoung.uek223.domain.appuser.dto.CreateUserDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -47,7 +48,7 @@ public class UserController {
 
     @Operation(summary = "Creates and saves a new user to the database")
     @PostMapping("/")
-    public ResponseEntity<User> createUser(@Valid @RequestBody com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO user) throws InstanceAlreadyExistsException, InvalidEmailException {
+    public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserDTO user) throws InstanceAlreadyExistsException, InvalidEmailException {
         return new ResponseEntity<>((userService.saveUser(user)), HttpStatus.CREATED);
     }
 

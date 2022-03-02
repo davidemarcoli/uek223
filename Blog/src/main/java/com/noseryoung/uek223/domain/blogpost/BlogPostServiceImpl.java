@@ -130,7 +130,7 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @Override
     public List<BlogPost> findAll(int page, int length) {
-        Pageable pageable = PageRequest.of(page, length, Sort.by("created_at").ascending());
+        Pageable pageable = PageRequest.of(page, length, Sort.by("createdAt").ascending());
         return blogPostRepository.findAll(pageable).getContent();
     }
 

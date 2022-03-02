@@ -1,9 +1,9 @@
 package com.noseryoung.uek223.domain.appuser;
 
+import com.noseryoung.uek223.domain.appuser.dto.CreateUserDTO;
 import com.noseryoung.uek223.domain.appuser.dto.UserDTO;
 import com.noseryoung.uek223.domain.appuser.dto.UserDTONoSensitive;
 
-import com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO;
 import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")

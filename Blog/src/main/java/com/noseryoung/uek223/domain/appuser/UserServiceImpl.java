@@ -1,5 +1,6 @@
 package com.noseryoung.uek223.domain.appuser;
 
+import com.noseryoung.uek223.domain.appuser.dto.CreateUserDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.role.Role;
@@ -70,7 +71,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO userDTO) throws InstanceAlreadyExistsException, InvalidEmailException {
+    public User saveUser(CreateUserDTO userDTO) throws InstanceAlreadyExistsException, InvalidEmailException {
         if (!EmailValidator.getInstance().isValid(userDTO.getEmail())) {
             throw new InvalidEmailException(errorMessages[1]);
         }

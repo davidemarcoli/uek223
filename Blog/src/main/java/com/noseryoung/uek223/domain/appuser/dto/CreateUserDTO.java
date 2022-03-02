@@ -1,4 +1,4 @@
-package com.noseryoung.uek223.domain.appUser.dto;
+package com.noseryoung.uek223.domain.appuser.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
