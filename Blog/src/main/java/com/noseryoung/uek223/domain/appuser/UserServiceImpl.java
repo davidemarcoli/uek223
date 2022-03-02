@@ -27,14 +27,14 @@ import java.util.*;
 @RequiredArgsConstructor
 @Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
-
-
     @Autowired
     private final UserRepository userRepository;
     @Autowired
     private final RoleRepository roleRepository;
-
+    private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
+
+    private final String[] errorMessages = new String[]{"User not found", "Email is not valid", "Username already exists"};
 
     @Override
 //    This method is used for security authentication, use caution when changing this
@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         User user = userRepository.findByUsername(username);
 
         if (user == null) {
-            throw new UsernameNotFoundException("User not found");
+            throw new UsernameNotFoundException(errorMessages[0]);
         } else {
 //          Construct a valid set of Authorities (needs to implement Granted Authorities)
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
@@ -70,21 +70,36 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException, InstanceNotFoundException {
+    public User saveUser(com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO userDTO) throws InstanceAlreadyExistsException, InvalidEmailException {
+        if (!EmailValidator.getInstance().isValid(userDTO.getEmail())) {
+            throw new InvalidEmailException(errorMessages[1]);
+        }
+        if (userRepository.findByUsername(userDTO.getUsername()) != null) {
+            throw new InstanceAlreadyExistsException(errorMessages[2]);
+        }
 
+        userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
+        User user  = userMapper.userDTOsCreateToUser(userDTO);
+        user.setRoles(List.of(roleRepository.findByName("USER")));
+        return userRepository.save(user);
+    }
+
+    public User updateAndSaveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
         if (!EmailValidator.getInstance().isValid(user.getEmail())) {
             throw new InvalidEmailException("Email is not valid");
         }
 
-        //When updating a user he needs the possiblity to keep his username ->  != null
-        if (userRepository.findByUsername(user.getUsername()) != null &&
-                !(userRepository.existsById(user.getId())
-                        && user.getUsername().equals(userRepository.findById(user.getId()).orElseThrow(InstanceNotFoundException::new).getUsername()))) {
-            throw new InstanceAlreadyExistsException("Username already exists");
-        } else {
-            user.setPassword(passwordEncoder.encode(user.getPassword()));
-            return userRepository.save(user);
+        //When updating a user he needs the possibility to keep his username, but in case he changes it we need to check if it's already in use
+        if (userRepository.findByUsername(user.getUsername()) == null && // if true -> username is not updated - false its updated
+                !user.getUsername().equals(userRepository.findById(user.getId()).get().getUsername())){
+                    throw new InstanceAlreadyExistsException(errorMessages[2]);  // if new is same as old all good else not
         }
+        // If password is updated -> encrypt, else -> do nothing
+        if (!(passwordEncoder.matches(/* Maybe updated password */ user.getPassword(),
+                /* Old password */ userRepository.findById(user.getId()).get().getPassword()))){
+            user.setPassword(passwordEncoder.encode(user.getPassword()));
+        }
+        return userRepository.save(user);
     }
 
     //TODO:Extract to roleservice
@@ -129,7 +144,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (hasAccess(id)) {
             user.setId(id);
             user.setRoles(userRepository.findById(id).orElseThrow(InstanceNotFoundException::new).getRoles());
-            return saveUser(user);
+            return updateAndSaveUser(user);
         } else {
             throw new NoAccessException();
         }

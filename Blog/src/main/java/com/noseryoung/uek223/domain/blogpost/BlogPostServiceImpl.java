@@ -1,15 +1,19 @@
 package com.noseryoung.uek223.domain.blogpost;
 
+import com.noseryoung.uek223.domain.appuser.User;
 import com.noseryoung.uek223.domain.appuser.UserRepository;
+import com.noseryoung.uek223.domain.appuser.UserService;
 import com.noseryoung.uek223.domain.blogpost.dto.UpdateBlogPostDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidObjectException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
+import com.noseryoung.uek223.domain.role.RoleRepository;
 import com.noseryoung.uek223.domain.utils.LevenshteinDistance;
 import com.noseryoung.uek223.domain.utils.LevenshteinResult;
 import com.noseryoung.uek223.domain.utils.MultiStopwatch;
 import com.noseryoung.uek223.domain.utils.NullAwareBeanUtilsBean;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -18,6 +22,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
@@ -27,12 +32,23 @@ import java.util.*;
 public class BlogPostServiceImpl implements BlogPostService {
 
     private final BlogPostRepository blogPostRepository;
-    private final BlogPostMapper blogPostMapper;
     private final UserRepository userRepository;
+    private final UserService userService;
+    private final RoleRepository roleRepository;
+    private final BlogPostMapper blogPostMapper;
     private final NullAwareBeanUtilsBean nullAwareBeanUtilsBean;
 
     @Override
+    @SneakyThrows
+    @Transactional
     public BlogPost createBlogPost(BlogPost blogPost) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User author = userRepository.findByUsername(auth.getName());
+        if (author.getRoles().contains(roleRepository.findByName("USER"))){
+            author.getRoles().add(roleRepository.findByName("AUTHOR"));
+            author.getRoles().remove(roleRepository.findByName("USER"));
+        }
+        blogPost.setAuthor(author);
         return blogPostRepository.saveAndFlush(blogPost);
     }
 
