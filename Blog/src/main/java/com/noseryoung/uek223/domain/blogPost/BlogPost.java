@@ -3,11 +3,10 @@ package com.noseryoung.uek223.domain.blogPost;
 import com.noseryoung.uek223.domain.appUser.User;
 import com.noseryoung.uek223.domain.category.Category;
 import lombok.*;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
-import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
@@ -39,6 +38,7 @@ public class BlogPost {
 
     @NotNull
     @ManyToMany(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinTable(name = "blog_post_category",
             joinColumns = @JoinColumn(name = "blog_post_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
@@ -53,6 +53,7 @@ public class BlogPost {
     @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private User author;
 
     @PrePersist
