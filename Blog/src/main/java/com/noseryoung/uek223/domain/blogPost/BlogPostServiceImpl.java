@@ -34,10 +34,11 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     private final BlogPostRepository blogPostRepository;
     private final BlogPostMapper blogPostMapper;
+    private final UserRepository userRepository;
     private final NullAwareBeanUtilsBean nullAwareBeanUtilsBean;
 
     @Override
-    public BlogPost create(BlogPost blogPost) {
+    public BlogPost createBlogPost(BlogPost blogPost) {
         return blogPostRepository.saveAndFlush(blogPost);
     }
 
