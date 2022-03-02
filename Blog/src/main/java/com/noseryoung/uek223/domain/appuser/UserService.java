@@ -1,7 +1,7 @@
-package com.noseryoung.uek223.domain.appUser;
+package com.noseryoung.uek223.domain.appuser;
 
 
-import com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO;
+import com.noseryoung.uek223.domain.appuser.dto.CreateUserDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.role.Role;
@@ -25,6 +25,6 @@ public interface UserService {
 
     void deleteUser(UUID id) throws InstanceNotFoundException, NoAccessException;
 
-    User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException;
+    User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException, InstanceNotFoundException;
 
 }

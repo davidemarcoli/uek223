@@ -1,4 +1,4 @@
-package com.noseryoung.uek223.domain.blogPost.dto;
+package com.noseryoung.uek223.domain.blogpost.dto;
 
 import com.noseryoung.uek223.domain.category.dto.CategoryDTOOnlyName;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 import java.util.Set;
 
 @Getter @Setter

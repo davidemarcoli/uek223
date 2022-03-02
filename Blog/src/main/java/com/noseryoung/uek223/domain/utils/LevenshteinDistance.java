@@ -1,13 +1,6 @@
 package com.noseryoung.uek223.domain.utils;
 
-import com.noseryoung.uek223.domain.blogPost.BlogPost;
-import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
-
-import java.lang.invoke.TypeDescriptor;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
 
 /**
@@ -64,12 +57,9 @@ public class LevenshteinDistance {
      * @return the minimum of the provided values
      */
     public static int min(int... numbers) {
-//        if (numbers.length == 0) {
-//            return Integer.MAX_VALUE;
-//        } else {
-//            return Arrays.stream(numbers).min().getAsInt();
-//        }
-
         return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
+    }
+
+    private LevenshteinDistance() {
     }
 }

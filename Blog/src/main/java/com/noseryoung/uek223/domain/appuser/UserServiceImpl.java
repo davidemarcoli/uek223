@@ -1,6 +1,6 @@
-package com.noseryoung.uek223.domain.appUser;
+package com.noseryoung.uek223.domain.appuser;
 
-import com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO;
+import com.noseryoung.uek223.domain.appuser.dto.CreateUserDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.role.Role;
@@ -19,6 +19,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
+import javax.management.InstanceNotFoundException;
 import javax.transaction.Transactional;
 
 import java.util.*;
@@ -49,9 +50,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             user.getRoles().forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-                role.getAuthorities().forEach(authority -> {
-                    authorities.add(new SimpleGrantedAuthority(authority.getName()));
-                });
+                role.getAuthorities().forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority.getName())));
             });
 //            return a spring internal user object that contains authorities and roles
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
@@ -88,7 +87,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     public User updateAndSaveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
         if (!EmailValidator.getInstance().isValid(user.getEmail())) {
-            throw new InvalidEmailException(errorMessages[2]);
+            throw new InvalidEmailException("Email is not valid");
         }
 
         //When updating a user he needs the possibility to keep his username, but in case he changes it we need to check if it's already in use
@@ -142,10 +141,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException {
+    public User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException, InstanceNotFoundException {
         if (hasAccess(id)) {
             user.setId(id);
-            user.setRoles(userRepository.findById(id).get().getRoles());
+            user.setRoles(userRepository.findById(id).orElseThrow(InstanceNotFoundException::new).getRoles());
             return updateAndSaveUser(user);
         } else {
             throw new NoAccessException();
