@@ -1,22 +1,16 @@
-package com.noseryoung.uek223.domain.blogPost;
+package com.noseryoung.uek223.domain.blogpost;
 
-import com.noseryoung.uek223.domain.appUser.User;
-import com.noseryoung.uek223.domain.appUser.UserRepository;
-import com.noseryoung.uek223.domain.appUser.UserService;
-import com.noseryoung.uek223.domain.blogPost.dto.UpdateBlogPostDTO;
+import com.noseryoung.uek223.domain.appuser.UserRepository;
+import com.noseryoung.uek223.domain.blogpost.dto.UpdateBlogPostDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidObjectException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
-import com.noseryoung.uek223.domain.role.Role;
-import com.noseryoung.uek223.domain.role.RoleRepository;
 import com.noseryoung.uek223.domain.utils.LevenshteinDistance;
 import com.noseryoung.uek223.domain.utils.LevenshteinResult;
 import com.noseryoung.uek223.domain.utils.MultiStopwatch;
 import com.noseryoung.uek223.domain.utils.NullAwareBeanUtilsBean;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
-import org.springframework.beans.BeanUtils;
-import org.springframework.context.annotation.Bean;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,11 +19,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.*;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class BlogPostServiceImpl implements BlogPostService {
 
     private final BlogPostRepository blogPostRepository;
@@ -83,20 +77,17 @@ public class BlogPostServiceImpl implements BlogPostService {
         }
 
 
-        System.out.println("Average Time per Calculation: " + multiStopwatch.getAverageTime());
+        log.info("Average Time per Calculation: " + multiStopwatch.getAverageTime());
 
         levenshteinDistances.sort(Comparator.comparing(LevenshteinResult::getDistance));
 
         List<BlogPost> validBlogPosts = new ArrayList<>();
 
         levenshteinDistances.forEach(entry -> {
-            if (entry.getSource() instanceof BlogPost) {
+            float difference = (float) entry.getDistance() / Math.max(title.length(), ((BlogPost) entry.getSource()).getTitle().length());
 
-                float difference = (float) entry.getDistance() / Math.max(title.length(), ((BlogPost) entry.getSource()).getTitle().length());
-
-                if (difference < 0.30f) {
-                    validBlogPosts.add((BlogPost) entry.getSource());
-                }
+            if (difference < 0.30f) {
+                validBlogPosts.add((BlogPost) entry.getSource());
             }
         });
 
@@ -123,8 +114,7 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @Override
     public List<BlogPost> findAll(int page, int length) {
-        //TODO: change sort by title to sort by publish date
-        Pageable pageable = PageRequest.of(page, length, Sort.by("title").ascending());
+        Pageable pageable = PageRequest.of(page, length, Sort.by("created_at").ascending());
         return blogPostRepository.findAll(pageable).getContent();
     }
 

@@ -1,6 +1,6 @@
-package com.noseryoung.uek223.domain.blogPost;
+package com.noseryoung.uek223.domain.blogpost;
 
-import com.noseryoung.uek223.domain.blogPost.dto.UpdateBlogPostDTO;
+import com.noseryoung.uek223.domain.blogpost.dto.UpdateBlogPostDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidObjectException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 
@@ -14,5 +14,4 @@ public interface BlogPostService {
     List<BlogPost> findByTitle(String title);
     void deleteBlogPost(UUID id) throws NoAccessException;
     List<BlogPost> findAll(int page, int length);
-//    BlogPost update(UUID id, BlogPost blogPost);
 }

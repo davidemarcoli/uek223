@@ -1,9 +1,5 @@
 package com.noseryoung.uek223.domain.authority;
 
-import com.noseryoung.uek223.domain.authority.Authority;
-import com.noseryoung.uek223.domain.authority.AuthorityRepository;
-import com.noseryoung.uek223.domain.authority.AuthorityService;
-import lombok.Setter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -33,6 +29,11 @@ public class AuthorityServiceImpl implements AuthorityService {
 
     @Override
     public List<Authority> findAll() {
-        return null;
+        return authorityRepository.findAll();
+    }
+
+    @Override
+    public Authority findById(UUID id) {
+        return authorityRepository.findById(id).orElse(null);
     }
 }

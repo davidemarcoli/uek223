@@ -2,13 +2,11 @@ package com.noseryoung.uek223.domain.role;
 
 import com.noseryoung.uek223.domain.authority.Authority;
 import com.noseryoung.uek223.domain.authority.AuthorityRepository;
-import com.noseryoung.uek223.domain.blogPost.BlogPost;
 import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
 import com.noseryoung.uek223.domain.role.dto.UpdateRoleDTO;
 import com.noseryoung.uek223.domain.utils.NullAwareBeanUtilsBean;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

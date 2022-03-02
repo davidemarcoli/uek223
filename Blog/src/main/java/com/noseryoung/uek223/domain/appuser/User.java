@@ -1,4 +1,4 @@
-package com.noseryoung.uek223.domain.appUser;
+package com.noseryoung.uek223.domain.appuser;
 
 import com.noseryoung.uek223.domain.role.Role;
 import lombok.*;

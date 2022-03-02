@@ -1,6 +1,5 @@
 package com.noseryoung.uek223.domain.authority;
 
-import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -8,8 +7,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.InstanceNotFoundException;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.UUID;
@@ -27,10 +24,17 @@ public class AuthorityController {
         return new ResponseEntity<>(authorityService.findAll(), HttpStatus.OK);
     }
 
+    @Operation(summary = "Retrieves a specific authorities")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<Authority> findAuthorities(@Valid @PathVariable UUID id) {
+        return new ResponseEntity<>(authorityService.findById(id), HttpStatus.OK);
+    }
+
     @Operation(summary = "Creates and saves a new authority to the database")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
-    public ResponseEntity<Authority> createAuthority(@Valid @RequestBody Authority authority) throws InstanceAlreadyExistsException, InvalidEmailException {
+    public ResponseEntity<Authority> createAuthority(@Valid @RequestBody Authority authority) {
         return new ResponseEntity<>(authorityService.saveRole(authority), HttpStatus.CREATED);
     }
 
@@ -44,7 +48,7 @@ public class AuthorityController {
     @Operation(summary = "Deletes the authority with the corresponding UUID")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<Authority> deleteAuthority(@Valid @PathVariable UUID id) throws InstanceNotFoundException {
+    public ResponseEntity<Authority> deleteAuthority(@Valid @PathVariable UUID id) {
         authorityService.deleteRole(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

@@ -1,4 +1,4 @@
-package com.noseryoung.uek223.domain.appUser;
+package com.noseryoung.uek223.domain.appuser;
 
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
@@ -18,6 +18,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import javax.management.InstanceAlreadyExistsException;
+import javax.management.InstanceNotFoundException;
 import javax.transaction.Transactional;
 
 import java.util.*;
@@ -48,9 +49,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             user.getRoles().forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-                role.getAuthorities().forEach(authority -> {
-                    authorities.add(new SimpleGrantedAuthority(authority.getName()));
-                });
+                role.getAuthorities().forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority.getName())));
             });
 //            return a spring internal user object that contains authorities and roles
             return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
@@ -71,7 +70,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
+    public User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException, InstanceNotFoundException {
 
         if (!EmailValidator.getInstance().isValid(user.getEmail())) {
             throw new InvalidEmailException("Email is not valid");
@@ -79,8 +78,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
         //When updating a user he needs the possiblity to keep his username ->  != null
         if (userRepository.findByUsername(user.getUsername()) != null &&
-                !(userRepository.existsById(user.getId()) &&
-                user.getUsername().equals(userRepository.findById(user.getId()).get().getUsername()))) {
+                !(userRepository.existsById(user.getId())
+                        && user.getUsername().equals(userRepository.findById(user.getId()).orElseThrow(InstanceNotFoundException::new).getUsername()))) {
             throw new InstanceAlreadyExistsException("Username already exists");
         } else {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -126,10 +125,10 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException {
+    public User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException, InstanceNotFoundException {
         if (hasAccess(id)) {
             user.setId(id);
-            user.setRoles(userRepository.findById(id).get().getRoles());
+            user.setRoles(userRepository.findById(id).orElseThrow(InstanceNotFoundException::new).getRoles());
             return saveUser(user);
         } else {
             throw new NoAccessException();

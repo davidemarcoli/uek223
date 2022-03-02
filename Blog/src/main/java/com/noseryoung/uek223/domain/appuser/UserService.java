@@ -1,4 +1,4 @@
-package com.noseryoung.uek223.domain.appUser;
+package com.noseryoung.uek223.domain.appuser;
 
 
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
@@ -12,7 +12,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-    User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException;
+    User saveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException, InstanceNotFoundException;
 
     Role saveRole(Role role);
 
@@ -24,6 +24,6 @@ public interface UserService {
 
     void deleteUser(UUID id) throws InstanceNotFoundException, NoAccessException;
 
-    User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException;
+    User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException, InstanceNotFoundException;
 
 }
