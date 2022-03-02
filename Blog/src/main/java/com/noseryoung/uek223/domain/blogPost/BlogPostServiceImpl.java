@@ -33,12 +33,23 @@ import java.util.*;
 public class BlogPostServiceImpl implements BlogPostService {
 
     private final BlogPostRepository blogPostRepository;
-    private final BlogPostMapper blogPostMapper;
     private final UserRepository userRepository;
+    private final UserService userService;
+    private final RoleRepository roleRepository;
+    private final BlogPostMapper blogPostMapper;
     private final NullAwareBeanUtilsBean nullAwareBeanUtilsBean;
 
     @Override
+    @SneakyThrows
+    @Transactional
     public BlogPost createBlogPost(BlogPost blogPost) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        User author = userRepository.findByUsername(auth.getName());
+        if (author.getRoles().contains(roleRepository.findByName("USER"))){
+            author.getRoles().add(roleRepository.findByName("AUTHOR"));
+            author.getRoles().remove(roleRepository.findByName("USER"));
+        }
+        blogPost.setAuthor(author);
         return blogPostRepository.saveAndFlush(blogPost);
     }
 

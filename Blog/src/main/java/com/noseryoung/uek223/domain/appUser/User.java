@@ -6,6 +6,7 @@ import lombok.*;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -38,7 +39,7 @@ public class User {
                     name = "user_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
-    private Set<Role> roles;
+    private List<Role> roles;
 
 
 
