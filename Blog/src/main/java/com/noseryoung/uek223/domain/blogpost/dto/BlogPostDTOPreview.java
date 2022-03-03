@@ -21,6 +21,6 @@ public class BlogPostDTOPreview {
     private LocalDateTime lastUpdatedAt;
 
     public void setContent(String content) {
-        this.content = content.substring(0,30) + "...";
+        this.content = content.substring(0, 30) + "...";
     }
 }

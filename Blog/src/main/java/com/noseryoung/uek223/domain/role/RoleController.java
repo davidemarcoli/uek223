@@ -1,6 +1,5 @@
 package com.noseryoung.uek223.domain.role;
 
-import com.noseryoung.uek223.domain.authority.Authority;
 import com.noseryoung.uek223.domain.role.dto.UpdateRoleDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

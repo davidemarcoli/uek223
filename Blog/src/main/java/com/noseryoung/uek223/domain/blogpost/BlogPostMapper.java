@@ -9,5 +9,6 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface BlogPostMapper {
     List<BlogPostDTOPreview> blogToBlogDTOsPreview(List<BlogPost> blogPosts);
+
     BlogPost updateBlogPostDTOToBlog(UpdateBlogPostDTO blogPosts);
 }

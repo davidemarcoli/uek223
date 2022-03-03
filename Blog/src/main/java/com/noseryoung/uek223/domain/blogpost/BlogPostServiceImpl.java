@@ -44,7 +44,7 @@ public class BlogPostServiceImpl implements BlogPostService {
         //Set author of blogpost to current user and update the role to AUTHOR if necessary
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User author = userRepository.findByUsername(auth.getName());
-        if (author.getRoles().contains(roleRepository.findByName("USER"))){
+        if (author.getRoles().contains(roleRepository.findByName("USER"))) {
             author.getRoles().add(roleRepository.findByName("AUTHOR"));
             author.getRoles().remove(roleRepository.findByName("USER"));
             log.log(Level.INFO, "Updated role from user " + author.getUsername() + " to AUTHOR");
@@ -58,15 +58,15 @@ public class BlogPostServiceImpl implements BlogPostService {
     @Transactional
     public BlogPost updateBlogPost(UpdateBlogPostDTO blogPost, UUID id)
             throws NoAccessException, NoBlogPostFoundException, InvalidObjectException {
-        if (blogPostRepository.existsById(id)){
-            if (hasAccess(id)){
+        if (blogPostRepository.existsById(id)) {
+            if (hasAccess(id)) {
                 // Map updateBlogPost back to normal blogpost and try to copy unchangeable data from the old to the new
                 // blogpost
                 BlogPost newBlogPost = blogPostMapper.updateBlogPostDTOToBlog(blogPost);
                 BlogPost oldBlogPost = findById(id);
                 try {
                     nullAwareBeanUtilsBean.copyProperties(oldBlogPost, newBlogPost);
-                } catch (Exception e){
+                } catch (Exception e) {
                     // Could be thrown if something goes wrong when copying the blogpost properties
                     log.log(Level.ERROR, "Something went wrong with copying blogposts: " +
                             Arrays.toString(e.getStackTrace()));

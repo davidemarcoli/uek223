@@ -1,4 +1,5 @@
 package com.noseryoung.uek223.domain.authority;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

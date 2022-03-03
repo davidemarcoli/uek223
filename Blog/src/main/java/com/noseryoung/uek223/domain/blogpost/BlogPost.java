@@ -3,10 +3,11 @@ package com.noseryoung.uek223.domain.blogpost;
 import com.noseryoung.uek223.domain.appuser.User;
 import com.noseryoung.uek223.domain.category.Category;
 import lombok.*;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.Date;

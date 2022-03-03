@@ -1,10 +1,10 @@
 package com.noseryoung.uek223.domain.blogpost;
 
+import com.noseryoung.uek223.domain.blogpost.dto.BlogPostDTOPreview;
 import com.noseryoung.uek223.domain.blogpost.dto.UpdateBlogPostDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidObjectException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
-import com.noseryoung.uek223.domain.blogpost.dto.BlogPostDTOPreview;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpHeaders;
