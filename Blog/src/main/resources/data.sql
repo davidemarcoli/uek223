@@ -42,6 +42,10 @@ VALUES ('74f04db8-71a9-4c3b-9fcc-59341c690e92', '9af4ee77-b1dc-4f55-848f-52e35b1
 
 INSERT INTO public.role_authorities (role_id, authority_id)
 VALUES ('0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3', '57c32df8-7093-42e8-bca1-7d5a89f27f2d');
+INSERT INTO public.role_authorities (role_id, authority_id)
+VALUES ('0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3', '99672754-c82b-47dd-b56c-2c405eaef6dd');
+INSERT INTO public.role_authorities (role_id, authority_id)
+VALUES ('0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3', '03b62363-340a-431b-a03b-fbe2618fc084');
 
 INSERT INTO public.users (id, email, "password", username)
 VALUES ('f2e0ea7d-b3ad-4510-a611-983eb81306ca', 'james.bond@mi6.com',

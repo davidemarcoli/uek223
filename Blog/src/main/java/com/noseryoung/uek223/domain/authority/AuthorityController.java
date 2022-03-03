@@ -24,7 +24,7 @@ public class AuthorityController {
         return new ResponseEntity<>(authorityService.findAllAuthorities(), HttpStatus.OK);
     }
 
-    @Operation(summary = "Retrieves a specific authority")
+    @Operation(summary = "Retrieves the authority with the corresponding UUID")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
     public ResponseEntity<Authority> findAuthority(@Valid @PathVariable UUID id) {

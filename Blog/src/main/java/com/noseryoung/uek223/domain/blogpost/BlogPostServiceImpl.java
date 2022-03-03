@@ -30,6 +30,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Log4j2
+@Transactional
 public class BlogPostServiceImpl implements BlogPostService {
 
     private final BlogPostRepository blogPostRepository;
@@ -39,8 +40,6 @@ public class BlogPostServiceImpl implements BlogPostService {
     private final NullAwareBeanUtilsBean nullAwareBeanUtilsBean;
 
     @Override
-    @SneakyThrows
-    @Transactional
     public BlogPost createBlogPost(BlogPost blogPost) {
         //Set author of blogpost to current user and update the role to AUTHOR if necessary
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -56,7 +55,6 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @Override
-    @Transactional
     public BlogPost updateBlogPost(UpdateBlogPostDTO blogPost, UUID id)
             throws NoAccessException, NoBlogPostFoundException, InvalidObjectException {
         if (blogPostRepository.existsById(id)) {
@@ -134,7 +132,6 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @Override
-    @Transactional
     public void deleteBlogPost(UUID id) throws NoAccessException, NoBlogPostFoundException {
         if (blogPostRepository.existsById(id)) {
             if (hasAccess(id)) {
