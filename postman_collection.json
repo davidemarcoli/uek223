@@ -157,6 +157,21 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "marcoli",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "davide",
+									"type": "string"
+								}
+							]
+						},
 						"method": "DELETE",
 						"header": [],
 						"url": {
@@ -173,7 +188,7 @@
 							"variable": [
 								{
 									"key": "uuid",
-									"value": null
+									"value": "54998d7d-c124-45f8-8345-d3fbc3cfbdbd"
 								}
 							]
 						}
@@ -1349,20 +1364,20 @@
 						"method": "DELETE",
 						"header": [],
 						"url": {
-							"raw": "localhost:8080/api/role/:uuid",
+							"raw": "localhost:8080/api/authority/:uuid",
 							"host": [
 								"localhost"
 							],
 							"port": "8080",
 							"path": [
 								"api",
-								"role",
+								"authority",
 								":uuid"
 							],
 							"variable": [
 								{
 									"key": "uuid",
-									"value": "99672754-c82b-47dd-b56c-2c405eaef6dd"
+									"value": "c7a3eb9c-6eaf-45a8-a6d0-e3d7b8d4ebc9"
 								}
 							]
 						},
