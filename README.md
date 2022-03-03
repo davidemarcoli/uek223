@@ -48,3 +48,7 @@ The site [http://localhost:8080/test/hello](http://localhost:8080/test/hello) sh
 * In Intellij go to `File -> Invalidate Caches -> Select All Checkboxes -> Invalidate and Restart`
 * In Intellij go to `View -> Tool Windows -> Gradle` and then click on the `Reload All Gradle Projects` Icon
 * If the Postman Requests doesn't work as expected, clear the Cookies and try again. If that doesn't fix the Problem, try closing all Tabs and restart Postman
+
+&nbsp;
+# Test
+Test the application by navigating into the Blog Directory and run `gradlew test` (in Powershell `./gradlew test`)
