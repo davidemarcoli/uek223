@@ -1,13 +1,6 @@
 package com.noseryoung.uek223.domain.utils;
 
-import com.noseryoung.uek223.domain.blogPost.BlogPost;
-import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
-
-import java.lang.invoke.TypeDescriptor;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
 
 
 /**
@@ -19,7 +12,7 @@ import java.util.List;
 public class LevenshteinDistance {
 
     public static int calculate(String str1, String str2) {
-        int[][] dp = new int[str1.length() + 1][str2.length() + 1];
+        int[][] dp = new int[str1.length() + 1][str2.length() + 1]; //TODO: what is dp? -> Naming
 
         for (int str1Index = 0; str1Index <= str1.length(); str1Index++) {
 
@@ -64,12 +57,9 @@ public class LevenshteinDistance {
      * @return the minimum of the provided values
      */
     public static int min(int... numbers) {
-//        if (numbers.length == 0) {
-//            return Integer.MAX_VALUE;
-//        } else {
-//            return Arrays.stream(numbers).min().getAsInt();
-//        }
-
         return Arrays.stream(numbers).min().orElse(Integer.MAX_VALUE);
+    }
+
+    private LevenshteinDistance() {
     }
 }

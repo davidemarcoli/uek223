@@ -1,4 +1,4 @@
-package com.noseryoung.uek223.domain.appUser;
+package com.noseryoung.uek223.domain.appuser;
 
 import com.noseryoung.uek223.domain.role.Role;
 import lombok.*;
@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.util.List;
-import java.util.Set;
 import java.util.UUID;
 
 @Entity(name="users")

@@ -1,6 +1,5 @@
-package com.noseryoung.uek223.domain.blogPost.dto;
+package com.noseryoung.uek223.domain.blogpost.dto;
 
-import com.noseryoung.uek223.domain.category.Category;
 import com.noseryoung.uek223.domain.category.dto.CategoryDTOOnlyName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

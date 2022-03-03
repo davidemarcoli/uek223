@@ -8,7 +8,6 @@ import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
 import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.config.annotation.web.WebSecurityConfigurer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
@@ -25,7 +24,7 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
 
      @Override
      protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-         auth.userDetailsService(userDetailsService);
+         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
 
      }
 
@@ -58,8 +57,6 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .antMatchers("/api/blog-post/**").permitAll()
                 .antMatchers("/api/user/**").permitAll()
-
-
                 .antMatchers("/api/**").hasRole("USER")
                 .and()
                 // some more method calls

@@ -1,8 +1,7 @@
-package com.noseryoung.uek223.domain.appUser;
+package com.noseryoung.uek223.domain.appuser;
 
 
-import com.noseryoung.uek223.domain.appUser.dto.CreateUserDTO;
-import com.noseryoung.uek223.domain.blogPost.BlogPostMapper;
+import com.noseryoung.uek223.domain.appuser.dto.CreateUserDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidEmailException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import io.swagger.v3.oas.annotations.Operation;
@@ -10,20 +9,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
 
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
 import javax.validation.Valid;
-import java.security.Principal;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/user")
 @RequiredArgsConstructor
-public class UserController{
+public class UserController {
 
     private final UserService userService;
     private final UserMapper userMapper;
@@ -39,19 +37,25 @@ public class UserController{
     @PreAuthorize("hasAnyAuthority('CAN_MANAGE_OWN_USER, CAN_RETRIEVE_USER')")
     @GetMapping("/{id}")
     public ResponseEntity<User> findUserById(@Valid @PathVariable UUID id) throws NoAccessException, InstanceNotFoundException {
-        return new ResponseEntity<>(userService.findById(id).get(), HttpStatus.OK);
+        Optional<User> user = userService.findById(id);
+
+        if (user.isPresent()) {
+            return new ResponseEntity<>(user.get(), HttpStatus.OK);
+        } else {
+            throw new InstanceNotFoundException("User with id " + id + " not found");
+        }
     }
 
     @Operation(summary = "Creates and saves a new user to the database")
     @PostMapping("/")
     public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserDTO user) throws InstanceAlreadyExistsException, InvalidEmailException {
-        return new ResponseEntity<>((userService.saveUser(user)), HttpStatus.CREATED);
+        return new ResponseEntity<>((userService.createUser(user)), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Updates the existing user corresponding to the UUID and saves it to the database")
     @PreAuthorize("hasAnyAuthority('CAN_MANAGE_OWN_USER, CAN_MANAGE_USER')")
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @Valid @PathVariable UUID id) throws NoAccessException, InstanceAlreadyExistsException, InvalidEmailException {
+    public ResponseEntity<User> updateUser(@Valid @RequestBody User user, @Valid @PathVariable UUID id) throws NoAccessException, InstanceAlreadyExistsException, InvalidEmailException, InstanceNotFoundException {
         return new ResponseEntity<>(userService.updateUser(user, id), HttpStatus.CREATED);
     }
 

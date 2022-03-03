@@ -18,7 +18,7 @@ class AppStartupRunner implements ApplicationRunner {
     public void run(ApplicationArguments args) throws Exception {
 //        RUN YOUR STARTUP CODE HERE
 //        e.g. to add a user or role to the DB (only for testing)
-        log.info("App wurde gestartet");
+        log.info("App started successfully");
 
     }
 }

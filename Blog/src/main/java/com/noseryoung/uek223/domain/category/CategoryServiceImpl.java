@@ -1,12 +1,11 @@
 package com.noseryoung.uek223.domain.category;
 
-import com.noseryoung.uek223.domain.blogPost.BlogPost;
-import com.noseryoung.uek223.domain.exceptions.NoBlogPostFoundException;
 import com.noseryoung.uek223.domain.exceptions.NoCategoryFoundException;
 import com.noseryoung.uek223.domain.utils.LevenshteinDistance;
 import com.noseryoung.uek223.domain.utils.LevenshteinResult;
 import com.noseryoung.uek223.domain.utils.MultiStopwatch;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -19,6 +18,7 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
+@Log4j2
 public class CategoryServiceImpl implements CategoryService {
 
     private final CategoryRepository categoryRepository;
@@ -54,20 +54,17 @@ public class CategoryServiceImpl implements CategoryService {
         }
 
 
-        System.out.println("Average Time per Calculation: " + multiStopwatch.getAverageTime());
+        log.info("Average Time per Calculation: " + multiStopwatch.getAverageTime());
 
         levenshteinDistances.sort(Comparator.comparing(LevenshteinResult::getDistance));
 
         List<Category> validCategories = new ArrayList<>();
 
         levenshteinDistances.forEach(entry -> {
-            if (entry.getSource() instanceof Category) {
+            float difference = (float) entry.getDistance() / Math.max(name.length(), ((Category) entry.getSource()).getName().length());
 
-                float difference = (float) entry.getDistance() / Math.max(name.length(), ((Category) entry.getSource()).getName().length());
-
-                if (difference < 0.30f) {
-                    validCategories.add((Category) entry.getSource());
-                }
+            if (difference < 0.30f) {
+                validCategories.add((Category) entry.getSource());
             }
         });
 

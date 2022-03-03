@@ -1,4 +1,4 @@
-package com.noseryoung.uek223.domain.blogPost;
+package com.noseryoung.uek223.domain.blogpost;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;

@@ -1,6 +1,7 @@
 package com.noseryoung.uek223.domain.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MultiStopwatch {
     private long startTime = 0;
@@ -16,7 +17,7 @@ public class MultiStopwatch {
         startTime = System.currentTimeMillis();
     }
 
-    public ArrayList<Long> getElapsedTimes() {
+    public List<Long> getElapsedTimes() {
         return elapsedTimes;
     }
 

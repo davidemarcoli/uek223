@@ -14,4 +14,6 @@ public interface AuthorityService {
     Authority saveRole(Authority authority);
 
     List<Authority> findAll();
+
+    Authority findById(UUID id);
 }

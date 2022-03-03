@@ -1,6 +1,6 @@
-package com.noseryoung.uek223.domain.blogPost;
+package com.noseryoung.uek223.domain.blogpost;
 
-import com.noseryoung.uek223.domain.appUser.User;
+import com.noseryoung.uek223.domain.appuser.User;
 import com.noseryoung.uek223.domain.category.Category;
 import lombok.*;
 import org.hibernate.annotations.*;
@@ -9,8 +9,6 @@ import javax.persistence.*;
 import javax.persistence.Entity;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.Set;
 import java.util.UUID;
