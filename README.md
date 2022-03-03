@@ -52,3 +52,6 @@ The site [http://localhost:8080/test/hello](http://localhost:8080/test/hello) sh
 &nbsp;
 # Test
 Test the application by navigating into the Blog Directory and run `gradlew test` (in Powershell `./gradlew test`)
+
+# Documentation
+https://docs.google.com/document/d/1hxL0kB_TRN3n9i_b6spLf8P9FwiaXaHClZp1uz7lHmA/edit?usp=sharing
