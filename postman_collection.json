@@ -1,0 +1,2098 @@
+{
+	"info": {
+		"_postman_id": "d26aff94-a92f-4842-92a7-d97ba44ac438",
+		"name": "Requests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "BlogPost",
+			"item": [
+				{
+					"name": "Get All BlogPosts",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Content shortened for preview\", function() {\r",
+									"    let contentIsShortened = true;\r",
+									"\r",
+									"    for (let blog of jsonData) {\r",
+									"        if (blog.content.length > 33) {\r",
+									"            contentIsShortened = false;\r",
+									"        }\r",
+									"    }\r",
+									"\r",
+									"    pm.expect(contentIsShortened).to.be.true;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/blog-post/0/10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								"0",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific BlogPost",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/blog-post/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get BlogPost By Title",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "climat chafsd"
+						},
+						"url": {
+							"raw": "localhost:8080/api/blog-post/?title=klimate chanege",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								""
+							],
+							"query": [
+								{
+									"key": "title",
+									"value": "klimate chanege"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Specific BlogPost",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/blog-post/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add BlogPost",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "bond",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "james",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Tilte\",\r\n    \"content\": \"This is a super fancy content!\",\r\n    \"category\": [\r\n        {\r\n            \"id\":\"b309713c-d688-4877-b393-271a463c5d17\"\r\n        }\r\n    ],\r\n    \"author\": {\r\n        \"id\":\"bce51025-c47f-4777-8bbd-3804778e0255\"\r\n        \r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/blog-post/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update BlogPost",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Regular expression to check if string is a valid UUID (https://melvingeorge.me/blog/check-if-string-valid-uuid-regex-javascript)\r",
+									"const uuidRegexExp = /^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi;\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Has Valid UUID\", function() {\r",
+									"    pm.expect(uuidRegexExp.test(jsonData.id)).to.be.true;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Has Found Blogpost\", function() {\r",
+									"    pm.expect(jsonData == \"No blog post found\").to.be.false;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "marcoli",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "davide",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"This is a dasdas\",\r\n    \"content\": \"This is a super fancy content!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/blog-post/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "278b22cc-9ecb-481e-941d-456ba33bd5cf"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "Get All Users",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/user/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Regular expression to check if string is a valid UUID (https://melvingeorge.me/blog/check-if-string-valid-uuid-regex-javascript)\r",
+									"const uuidRegexExp = /^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi;\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Has Status 200\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Has Valid UUID\", function() {\r",
+									"    pm.expect(uuidRegexExp.test(jsonData.id)).to.be.true;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/user/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "bce51025-c47f-4777-8bbd-3804778e0255"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Specific User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/user/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "3ad10bbb-1ffa-4baa-a10a-95ccde9b4452"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Add User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Regular expression to check if string is a valid UUID (https://melvingeorge.me/blog/check-if-string-valid-uuid-regex-javascript)\r",
+									"const uuidRegexExp = /^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi;\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Has Valid Email\", function() {\r",
+									"    pm.expect(jsonData == \"Email is not valid\").to.be.false;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Has Unique Email\", function() {\r",
+									"    pm.expect(jsonData == \"Email already exists\").to.be.false;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Has Unique Username\", function() {\r",
+									"    pm.expect(jsonData == \"Username already exists\").to.be.false;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": \"b09639ea-f6fa-4767-8081-c7952287be91\",\r\n    \"username\": \"testuser\",\r\n    \"email\": \"test@test.ch\",\r\n    \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/user/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update User",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Regular expression to check if string is a valid UUID (https://melvingeorge.me/blog/check-if-string-valid-uuid-regex-javascript)\r",
+									"const uuidRegexExp = /^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi;\r",
+									"\r",
+									"const jsonData = pm.response.json();\r",
+									"\r",
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Has Valid Email\", function() {\r",
+									"    pm.expect(jsonData == \"Email is not valid\").to.be.false;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Has Unique Email\", function() {\r",
+									"    pm.expect(jsonData == \"Email already exists\").to.be.false;\r",
+									"})\r",
+									"\r",
+									"pm.test(\"Has Unique Username\", function() {\r",
+									"    pm.expect(jsonData == \"Username already exists\").to.be.false;\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": \"testuser\",\r\n    \"email\": \"test@user.ch\",\r\n    \"password\": \"test\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/user/3ad10bbb-1ffa-4baa-a10a-95ccde9b4452",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"user",
+								"3ad10bbb-1ffa-4baa-a10a-95ccde9b4452"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Category",
+			"item": [
+				{
+					"name": "Add Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TestCategory\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/category/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"category",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Categories",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/category/0/10",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"category",
+								"0",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Category",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/category/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"category",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "b309713c-d688-4877-b393-271a463c5d17"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Category",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TestUpdate\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/category/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"category",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "b309713c-d688-4877-b393-271a463c5d17"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Category",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/category/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"category",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "b309713c-d688-4877-b393-271a463c5d17"
+								}
+							]
+						},
+						"description": "# **Disclaimer!**\n\nWeil wir Probleme mit Foreign Key Contraints haben, kann man nur Kategorien löschen, die zu keinem BlogPost gehören."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Role",
+			"item": [
+				{
+					"name": "Add Role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TestRole\",\r\n    \"authorities\": [\r\n        {\r\n            \"id\": \"03b62363-340a-431b-a03b-fbe2618fc084\"\r\n        },\r\n        {\r\n            \"id\": \"9af4ee77-b1dc-4f55-848f-52e35b1d812c\"\r\n        }\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/role/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"role",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Roles",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/role/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"role",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Role",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/role/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"role",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Role",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TestUpdateRole\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/role/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"role",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Role",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/role/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"role",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3"
+								}
+							]
+						},
+						"description": "# **Disclaimer!**\n\nWeil wir Probleme mit Foreign Key Contraints haben, kann man nur Kategorien löschen, die zu keinem BlogPost gehören."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Authority",
+			"item": [
+				{
+					"name": "Add Authority",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TestAuthority\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/authority/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authority",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get All Authorities",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/authority/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authority",
+								""
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Get Specific Authority",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/authority/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authority",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "99672754-c82b-47dd-b56c-2c405eaef6dd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Update Authority",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(201)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"TestUpdateAuthority\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/authority/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"authority",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "99672754-c82b-47dd-b56c-2c405eaef6dd"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Delete Authority",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/role/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"role",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "99672754-c82b-47dd-b56c-2c405eaef6dd"
+								}
+							]
+						},
+						"description": "# **Disclaimer!**\n\nWeil wir Probleme mit Foreign Key Contraints haben, kann man nur Kategorien löschen, die zu keinem BlogPost gehören."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Flows",
+			"item": [
+				{
+					"name": "Delete Specific BlogPost Flow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(204)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/blog-post/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "278b22cc-9ecb-481e-941d-456ba33bd5cf"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example1",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/blog-post/:uuid",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"blog-post",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "278b22cc-9ecb-481e-941d-456ba33bd5cf"
+										}
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "plain",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 03 Mar 2022 11:16:40 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": null
+						}
+					]
+				},
+				{
+					"name": "Add BlogPost Flow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})\r",
+									"\r",
+									""
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"Test Tilte\",\r\n    \"content\": \"This is a super fancy content!\",\r\n    \"category\": [\r\n        {\r\n            \"id\":\"b309713c-d688-4877-b393-271a463c5d17\"\r\n        }\r\n    ],\r\n    \"author\": {\r\n        \"id\":\"bce51025-c47f-4777-8bbd-3804778e0255\"\r\n        \r\n    }\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/blog-post/",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								""
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example1",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"Test Tilte\",\r\n    \"content\": \"This is a super fancy content!\",\r\n    \"category\": [\r\n        {\r\n            \"id\":\"b309713c-d688-4877-b393-271a463c5d17\"\r\n        }\r\n    ],\r\n    \"author\": {\r\n        \"id\":\"bce51025-c47f-4777-8bbd-3804778e0255\"\r\n        \r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/blog-post/",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"blog-post",
+										""
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Set-Cookie",
+									"value": "JSESSIONID=9D07E2123E2A79B4DC2F7C57F080C1A2; Path=/; HttpOnly"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 03 Mar 2022 10:49:53 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": "{\n    \"id\": \"037b0f3e-b1da-4d62-be66-1156259f227c\",\n    \"title\": \"Test Tilte\",\n    \"content\": \"This is a super fancy content!\",\n    \"category\": [\n        {\n            \"id\": \"b309713c-d688-4877-b393-271a463c5d17\",\n            \"name\": null\n        }\n    ],\n    \"createdAt\": \"2022-03-03T10:49:53.595+00:00\",\n    \"updatedAt\": null,\n    \"author\": {\n        \"id\": \"bce51025-c47f-4777-8bbd-3804778e0255\",\n        \"username\": \"andrin\",\n        \"email\": \"andrin.klarer@gmail.com\",\n        \"password\": \"$2a$12$Snp.XzzzXWHEENckz0CgfOIPoEq3T2uqie4I5Tz4jMoytgfXnfIiO\",\n        \"roles\": [\n            {\n                \"id\": \"74f04db8-71a9-4c3b-9fcc-59341c690e92\",\n                \"name\": \"ADMIN\",\n                \"authorities\": [\n                    {\n                        \"id\": \"c880be12-5a57-4469-abf1-2c28bb390ba7\",\n                        \"name\": \"CAN_RETRIEVE_ALL_USERS\"\n                    },\n                    {\n                        \"id\": \"c7a3eb9c-6eaf-45a8-a6d0-e3d7b8d4ebc9\",\n                        \"name\": \"CAN_RETRIEVE_USER\"\n                    },\n                    {\n                        \"id\": \"b40c1838-81e2-4c26-87f8-1f7430189528\",\n                        \"name\": \"CAN_MANAGE_USER\"\n                    },\n                    {\n                        \"id\": \"03b62363-340a-431b-a03b-fbe2618fc084\",\n                        \"name\": \"CAN_MANAGE_OWN_USER\"\n                    },\n                    {\n                        \"id\": \"9af4ee77-b1dc-4f55-848f-52e35b1d812c\",\n                        \"name\": \"CAN_MANAGE_BLOG\"\n                    },\n                    {\n                        \"id\": \"57c32df8-7093-42e8-bca1-7d5a89f27f2d\",\n                        \"name\": \"CAN_MANAGE_OWN_BLOG\"\n                    },\n                    {\n                        \"id\": \"99672754-c82b-47dd-b56c-2c405eaef6dd\",\n                        \"name\": \"CAN_CREATE_BLOG\"\n                    }\n                ]\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update BlogPost Flow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "password",
+									"value": "klarer",
+									"type": "string"
+								},
+								{
+									"key": "username",
+									"value": "andrin",
+									"type": "string"
+								}
+							]
+						},
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"title\": \"This is a TestUpdate\",\r\n    \"content\": \"This is a super fancy content!\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:8080/api/blog-post/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": "278b22cc-9ecb-481e-941d-456ba33bd5cf"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "Example1",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"This is a dasdas\",\r\n    \"content\": \"This is a super fancy content!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/blog-post/:uuid",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"blog-post",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "278b22cc-9ecb-481e-941d-456ba33bd5cf"
+										}
+									]
+								}
+							},
+							"status": "Created",
+							"code": 201,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "1; mode=block"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 03 Mar 2022 11:02:38 GMT"
+								},
+								{
+									"key": "Keep-Alive",
+									"value": "timeout=60"
+								},
+								{
+									"key": "Connection",
+									"value": "keep-alive"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": \"278b22cc-9ecb-481e-941d-456ba33bd5cf\",\n    \"title\": \"This is a dasdas\",\n    \"content\": \"This is a super fancy content!\",\n    \"category\": [\n        {\n            \"id\": \"b309713c-d688-4877-b393-271a463c5d17\",\n            \"name\": \"environment\"\n        }\n    ],\n    \"createdAt\": \"2022-03-03T10:49:15.659+00:00\",\n    \"updatedAt\": \"2022-03-03T11:02:38.441+00:00\",\n    \"author\": {\n        \"id\": \"3ad10bbb-1ffa-4baa-a10a-95ccde9b4452\",\n        \"username\": \"davide\",\n        \"email\": \"davide@marcoli.ch\",\n        \"password\": \"$2a$12$GHgpT/gPBUeR7AAhu8j8lesHx7NyEe4L095jk9GbFA.A184zKxsCS\",\n        \"roles\": [\n            {\n                \"id\": \"0bbda63c-9b0a-4001-b0c6-9f9b2b1ca8a3\",\n                \"name\": \"AUTHOR\",\n                \"authorities\": [\n                    {\n                        \"id\": \"57c32df8-7093-42e8-bca1-7d5a89f27f2d\",\n                        \"name\": \"CAN_MANAGE_OWN_BLOG\"\n                    }\n                ]\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Specific BlogPost Flow",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Test if request is successful\", function() {\r",
+									"    pm.response.to.have.status(200)\r",
+									"})"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "localhost:8080/api/blog-post/:uuid",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"blog-post",
+								":uuid"
+							],
+							"variable": [
+								{
+									"key": "uuid",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Different Users",
+			"item": [
+				{
+					"name": "Davide",
+					"item": [
+						{
+							"name": "Update BlogPost",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test if request is successful\", function() {\r",
+											"    pm.response.to.have.status(201)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "marcoli",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "davide",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"This is a dasdas\",\r\n    \"content\": \"This is a super fancy content!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/blog-post/:uuid",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"blog-post",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "278b22cc-9ecb-481e-941d-456ba33bd5cf"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "James",
+					"item": [
+						{
+							"name": "Update BlogPost",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"pm.test(\"Test if request is successful\", function() {\r",
+											"    pm.response.to.have.status(201)\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "bond",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "james",
+											"type": "string"
+										}
+									]
+								},
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"title\": \"This is a dasdas\",\r\n    \"content\": \"This is a super fancy content!\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:8080/api/blog-post/:uuid",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"blog-post",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "278b22cc-9ecb-481e-941d-456ba33bd5cf"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Admin",
+					"item": [
+						{
+							"name": "Get Admin User",
+							"event": [
+								{
+									"listen": "test",
+									"script": {
+										"exec": [
+											"// Regular expression to check if string is a valid UUID (https://melvingeorge.me/blog/check-if-string-valid-uuid-regex-javascript)\r",
+											"const uuidRegexExp = /^[0-9a-fA-F]{8}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{4}\\b-[0-9a-fA-F]{12}$/gi;\r",
+											"\r",
+											"const jsonData = pm.response.json();\r",
+											"\r",
+											"pm.test(\"Has Status 200\", function() {\r",
+											"    pm.response.to.have.status(200)\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Can Create Blogs\", function() {\r",
+											"    let canCreateBlog = false;\r",
+											"\r",
+											"    for (let role of jsonData.roles) {\r",
+											"        for (let auhority of role.authorities) {\r",
+											"            if (auhority.name === \"CAN_CREATE_BLOG\") {\r",
+											"                canCreateBlog = true;\r",
+											"                break;\r",
+											"            }\r",
+											"        }\r",
+											"    }\r",
+											"\r",
+											"    pm.expect(canCreateBlog).to.be.true;\r",
+											"})\r",
+											"\r",
+											"pm.test(\"Has Valid UUID\", function() {\r",
+											"    pm.expect(uuidRegexExp.test(jsonData.id)).to.be.true;\r",
+											"})"
+										],
+										"type": "text/javascript"
+									}
+								}
+							],
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "password",
+											"value": "klarer",
+											"type": "string"
+										},
+										{
+											"key": "username",
+											"value": "andrin",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "localhost:8080/api/user/:uuid",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"user",
+										":uuid"
+									],
+									"variable": [
+										{
+											"key": "uuid",
+											"value": "bce51025-c47f-4777-8bbd-3804778e0255"
+										}
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "basic",
+		"basic": [
+			{
+				"key": "password",
+				"value": "bond",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "james",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}
