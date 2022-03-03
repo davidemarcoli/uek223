@@ -7,13 +7,13 @@ import java.util.UUID;
 
 @Service
 public interface AuthorityService {
-    void deleteRole(UUID id);
+    void deleteAuthority(UUID id);
 
-    Authority updateRole(Authority authority, UUID id);
+    Authority updateAuthority(Authority authority, UUID id);
 
-    Authority saveRole(Authority authority);
+    Authority createAuthority(Authority authority);
 
-    List<Authority> findAll();
+    List<Authority> findAllAuthorities();
 
-    Authority findById(UUID id);
+    Authority findAuthorityById(UUID id);
 }

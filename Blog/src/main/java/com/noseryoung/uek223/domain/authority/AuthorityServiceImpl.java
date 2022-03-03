@@ -1,39 +1,39 @@
 package com.noseryoung.uek223.domain.authority;
-
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class AuthorityServiceImpl implements AuthorityService {
-    @Autowired
-    private AuthorityRepository authorityRepository;
+
+    private final AuthorityRepository authorityRepository;
 
     @Override
-    public void deleteRole(UUID id) {
+    public void deleteAuthority(UUID id) {
         authorityRepository.deleteById(id);
     }
 
     @Override
-    public Authority updateRole(Authority authority, UUID id) {
+    public Authority updateAuthority(Authority authority, UUID id) {
         authority.setId(id);
         return authorityRepository.saveAndFlush(authority);
     }
 
     @Override
-    public Authority saveRole(Authority authority) {
-        return null;
+    public Authority createAuthority(Authority authority) {
+        return authorityRepository.saveAndFlush(authority);
     }
 
     @Override
-    public List<Authority> findAll() {
+    public List<Authority> findAllAuthorities() {
         return authorityRepository.findAll();
     }
 
     @Override
-    public Authority findById(UUID id) {
+    public Authority findAuthorityById(UUID id) {
         return authorityRepository.findById(id).orElse(null);
     }
 }

@@ -2,7 +2,6 @@ package com.noseryoung.uek223.domain.blogpost;
 
 import com.noseryoung.uek223.domain.appuser.User;
 import com.noseryoung.uek223.domain.appuser.UserRepository;
-import com.noseryoung.uek223.domain.appuser.UserService;
 import com.noseryoung.uek223.domain.blogpost.dto.UpdateBlogPostDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidObjectException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
@@ -26,7 +25,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
-import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -35,14 +33,13 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     private final BlogPostRepository blogPostRepository;
     private final UserRepository userRepository;
-    private final UserService userService;
     private final RoleRepository roleRepository;
     private final BlogPostMapper blogPostMapper;
     private final NullAwareBeanUtilsBean nullAwareBeanUtilsBean;
 
     @Override
     @SneakyThrows
-    @Transactional()
+    @Transactional
     public BlogPost createBlogPost(BlogPost blogPost) {
         //Set author of blogpost to current user and update the role to AUTHOR if necessary
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -59,7 +56,8 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @Override
     @Transactional
-    public BlogPost updateBlogPost(UpdateBlogPostDTO blogPost, UUID id) throws NoAccessException, NoBlogPostFoundException, InvalidObjectException {
+    public BlogPost updateBlogPost(UpdateBlogPostDTO blogPost, UUID id)
+            throws NoAccessException, NoBlogPostFoundException, InvalidObjectException {
         if (blogPostRepository.existsById(id)){
             if (hasAccess(id)){
                 // Map updateBlogPost back to normal blogpost and try to copy unchangeable data from the old to the new
@@ -103,7 +101,8 @@ public class BlogPostServiceImpl implements BlogPostService {
 
         // calculate levenshtein distance between every blog post and the searched string
         for (BlogPost blogPost : blogPosts) {
-            int levenshteinDistance = LevenshteinDistance.calculate(searchedTitle.toUpperCase(), blogPost.getTitle().toUpperCase());
+            int levenshteinDistance = LevenshteinDistance.calculate(searchedTitle.toUpperCase(),
+                    blogPost.getTitle().toUpperCase());
             multiStopwatch.newTime();
             levenshteinDistances.add(new LevenshteinResult(blogPost, levenshteinDistance));
         }
@@ -118,7 +117,8 @@ public class BlogPostServiceImpl implements BlogPostService {
         levenshteinDistances.forEach(entry -> {
             // calculate the difference in percent,
             // based of the calculated distance and the length of either the blog title or the title searched for.
-            float difference = (float) entry.getDistance() / Math.max(searchedTitle.length(), ((BlogPost) entry.getSource()).getTitle().length());
+            float difference = (float) entry.getDistance() / Math.max(searchedTitle.length(),
+                    ((BlogPost) entry.getSource()).getTitle().length());
             // Retrieve all blogposts whose titles are at least 30% similar to the search string
             if (difference < 0.30f) {
                 validBlogPosts.add((BlogPost) entry.getSource());
@@ -130,10 +130,10 @@ public class BlogPostServiceImpl implements BlogPostService {
         } else {
             return validBlogPosts;
         }
-
     }
 
     @Override
+    @Transactional
     public void deleteBlogPost(UUID id) throws NoAccessException, NoBlogPostFoundException {
         if (blogPostRepository.existsById(id)) {
             if (hasAccess(id)) {
@@ -159,6 +159,4 @@ public class BlogPostServiceImpl implements BlogPostService {
         return findById(id).getAuthor().getId().equals(userRepository.findByUsername(auth.getName()).getId()) ||
                 auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
     }
-
-
 }

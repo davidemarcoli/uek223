@@ -48,7 +48,8 @@ public class CategoryServiceImpl implements CategoryService {
 
         multiStopwatch.start();
         for (Category category : categories) {
-            int levenshteinDistance = LevenshteinDistance.calculate(name.toUpperCase(), category.getName().toUpperCase());
+            int levenshteinDistance = LevenshteinDistance.calculate(name.toUpperCase(),
+                    category.getName().toUpperCase());
             multiStopwatch.newTime();
             levenshteinDistances.add(new LevenshteinResult(category, levenshteinDistance));
         }
@@ -61,7 +62,8 @@ public class CategoryServiceImpl implements CategoryService {
         List<Category> validCategories = new ArrayList<>();
 
         levenshteinDistances.forEach(entry -> {
-            float difference = (float) entry.getDistance() / Math.max(name.length(), ((Category) entry.getSource()).getName().length());
+            float difference = (float) entry.getDistance() / Math.max(name.length(),
+                    ((Category) entry.getSource()).getName().length());
 
             if (difference < 0.30f) {
                 validCategories.add((Category) entry.getSource());

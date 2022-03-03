@@ -21,20 +21,22 @@ public class CategoryController {
     private final CategoryService categoryService;
     private final CategoryMapper categoryMapper;
 
-    @Operation(summary = "Retrieves the Categories with page and length")
+    @Operation(summary = "Retrieves the first ten categories alphabetically ordered")
     @GetMapping("/{page}/{length}")
-    public ResponseEntity<List<CategoryDTOOnlyName>> findAllCategories(@PathVariable int page, @PathVariable int length) {
-        return new ResponseEntity<>(categoryMapper.categoryToCategoryDTOsOnlyName(categoryService.findAll(page, length)), HttpStatus.OK);
+    public ResponseEntity<List<CategoryDTOOnlyName>> findAllCategories
+            (@PathVariable int page, @PathVariable int length) {
+        return new ResponseEntity<>(
+                categoryMapper.categoryToCategoryDTOsOnlyName(categoryService.findAll(page, length)), HttpStatus.OK);
     }
 
-    @Operation(summary = "Retrieves the Category with the corresponding ID")
+    @Operation(summary = "Retrieves the category with the corresponding UUID")
     @PreAuthorize("hasRole('AUTHOR')")
     @GetMapping("/{id}")
     public ResponseEntity<Category> findCategoryById(@Valid @PathVariable UUID id) {
         return new ResponseEntity<>(categoryService.findById(id), HttpStatus.OK);
     }
 
-    @Operation(summary = "Retrieves the Category with the corresponding Name")
+    @Operation(summary = "Retrieves categories that are similar to the given name")
     @PreAuthorize("hasRole('AUTHOR')")
     @GetMapping("/")
     public ResponseEntity<List<Category>> getCategoryByTitle(@Valid @RequestParam String name) {
@@ -48,21 +50,21 @@ public class CategoryController {
     }
 
     @PostMapping("/")
-    @Operation(summary = "Needs a Category object to create a new Category")
+    @Operation(summary = "Creates and saves a new category to the database")
     @PreAuthorize("hasRole('AUTHOR')")
     public ResponseEntity<Category> createCategory(@Valid @RequestBody Category category) {
         return new ResponseEntity<>(categoryService.create(category), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    @Operation(summary = "Needs a Category and an ID to update an existing Category")
+    @Operation(summary = "Updates the existing category corresponding to the UUID and saves it to the database")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> updateCategory(@Valid @RequestBody Category category, @PathVariable UUID id) {
         return new ResponseEntity<>(categoryService.update(category, id), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
-    @Operation(summary = "Deletes the Category with the corresponding ID")
+    @Operation(summary = "Deletes the category with the corresponding UUID")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Category> deleteCategory(@Valid @PathVariable UUID id) {
         categoryService.delete(id);

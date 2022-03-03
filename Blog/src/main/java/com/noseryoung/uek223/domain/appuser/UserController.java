@@ -24,7 +24,6 @@ import java.util.UUID;
 public class UserController {
 
     private final UserService userService;
-    private final UserMapper userMapper;
 
     @Operation(summary = "Retrieves all users")
     @PreAuthorize("hasAuthority('CAN_RETRIEVE_ALL_USERS')")

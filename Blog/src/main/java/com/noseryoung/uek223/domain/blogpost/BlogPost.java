@@ -42,10 +42,10 @@ public class BlogPost {
             inverseJoinColumns = @JoinColumn(name = "category_id", referencedColumnName = "id"))
     private Set<Category> category;
 
-//    @CreationTimestamp
+    // @CreationTimestamp
     private Date createdAt;
 
-//    @UpdateTimestamp
+    // @UpdateTimestamp
     private Date updatedAt;
 
     @ManyToOne

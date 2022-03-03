@@ -1,5 +1,6 @@
 package com.noseryoung.uek223.domain.role;
 
+import com.noseryoung.uek223.domain.authority.Authority;
 import com.noseryoung.uek223.domain.role.dto.UpdateRoleDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,13 @@ public class RoleController {
     @GetMapping("/")
     public ResponseEntity<List<Role>> findAllRoles() {
         return new ResponseEntity<>(roleService.findAll(), HttpStatus.OK);
+    }
+
+    @Operation(summary = "Retrieves the role with the corresponding UUID")
+    @PreAuthorize("hasRole('ADMIN')")
+    @GetMapping("/{id}")
+    public ResponseEntity<Role> findRole(@Valid @PathVariable UUID id) {
+        return new ResponseEntity<>(roleService.findRoleById(id), HttpStatus.OK);
     }
 
     @Operation(summary = "Creates and saves a new role to the database")

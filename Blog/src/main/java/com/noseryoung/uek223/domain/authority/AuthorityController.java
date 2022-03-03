@@ -21,35 +21,36 @@ public class AuthorityController {
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/")
     public ResponseEntity<List<Authority>> findAllAuthorities() {
-        return new ResponseEntity<>(authorityService.findAll(), HttpStatus.OK);
+        return new ResponseEntity<>(authorityService.findAllAuthorities(), HttpStatus.OK);
     }
 
-    @Operation(summary = "Retrieves a specific authorities")
+    @Operation(summary = "Retrieves a specific authority")
     @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/{id}")
-    public ResponseEntity<Authority> findAuthorities(@Valid @PathVariable UUID id) {
-        return new ResponseEntity<>(authorityService.findById(id), HttpStatus.OK);
+    public ResponseEntity<Authority> findAuthority(@Valid @PathVariable UUID id) {
+        return new ResponseEntity<>(authorityService.findAuthorityById(id), HttpStatus.OK);
     }
 
     @Operation(summary = "Creates and saves a new authority to the database")
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/")
     public ResponseEntity<Authority> createAuthority(@Valid @RequestBody Authority authority) {
-        return new ResponseEntity<>(authorityService.saveRole(authority), HttpStatus.CREATED);
+        return new ResponseEntity<>(authorityService.createAuthority(authority), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Updates the existing authority corresponding to the UUID and saves it to the database")
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
-    public ResponseEntity<Authority> updateAuthority(@Valid @RequestBody Authority authority, @Valid @PathVariable UUID id) {
-        return new ResponseEntity<>(authorityService.updateRole(authority, id), HttpStatus.CREATED);
+    public ResponseEntity<Authority> updateAuthority
+            (@Valid @RequestBody Authority authority, @Valid @PathVariable UUID id) {
+        return new ResponseEntity<>(authorityService.updateAuthority(authority, id), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Deletes the authority with the corresponding UUID")
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<Authority> deleteAuthority(@Valid @PathVariable UUID id) {
-        authorityService.deleteRole(id);
+        authorityService.deleteAuthority(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

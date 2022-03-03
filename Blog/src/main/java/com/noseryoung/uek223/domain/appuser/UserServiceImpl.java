@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.apache.logging.log4j.Level;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,14 +30,13 @@ import java.util.*;
 @Transactional
 @Log4j2
 public class UserServiceImpl implements UserService, UserDetailsService {
-    @Autowired
     private final UserRepository userRepository;
-    @Autowired
     private final RoleRepository roleRepository;
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
 
-    private final String[] errorMessages = new String[]{"User not found", "Email is not valid", "Username already exists"};
+    private final String[] errorMessages = new String[]
+            {"User not found", "Email is not valid", "Username already exists"};
 
     @Override
 //    This method is used for security authentication, use caution when changing this
@@ -53,10 +51,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
             user.getRoles().forEach(role -> {
                 authorities.add(new SimpleGrantedAuthority("ROLE_" + role.getName()));
-                role.getAuthorities().forEach(authority -> authorities.add(new SimpleGrantedAuthority(authority.getName())));
+                role.getAuthorities().forEach(
+                        authority -> authorities.add(new SimpleGrantedAuthority(authority.getName())));
             });
 //            return a spring internal user object that contains authorities and roles
-            return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), authorities);
+            return new org.springframework.security.core.userdetails.User(
+                    user.getUsername(), user.getPassword(), authorities);
         }
     }
 
@@ -93,6 +93,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Transactional
+    @Override
     public User updateAndSaveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
         if (!EmailValidator.getInstance().isValid(user.getEmail())) {
             log.log(Level.WARN, errorMessages[1]);
@@ -113,20 +114,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         log.log(Level.INFO, "Attempting to save updated user");
         return userRepository.saveAndFlush(user);
     }
-
-    //TODO:Extract to roleservice
-    @Override
-    public Role saveRole(Role role) {
-        return roleRepository.save(role);
-    }
-
-    @Override
-    public void addRoleToUser(String username, String rolename) {
-        User user = userRepository.findByUsername(username);
-        Role role = roleRepository.findByName(rolename);
-        user.getRoles().add(role);
-    }
-
 
     @Override
     public Optional<User> findById(UUID id) throws NoAccessException {
@@ -154,7 +141,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User updateUser(User user, UUID id) throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException, InstanceNotFoundException {
+    public User updateUser(User user, UUID id)
+            throws InstanceAlreadyExistsException, InvalidEmailException, NoAccessException, InstanceNotFoundException {
         if (hasAccess(id)) {
             user.setId(id);
             user.setRoles(userRepository.findById(id).orElseThrow(InstanceNotFoundException::new).getRoles());
@@ -162,8 +150,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else {
             throw new NoAccessException();
         }
+    }
 
-
+    public void addRoleToUser(String username, String rolename) {
+        User user = userRepository.findByUsername(username);
+        Role role = roleRepository.findByName(rolename);
+        user.getRoles().add(role);
     }
 
     private boolean hasAccess(UUID id) {
@@ -179,17 +171,4 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             return false;
         }
     }
-
-    private boolean hasAccess(String username) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        try {
-            return username.equals(auth.getName()) ||
-                    auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
-        } catch (Exception e) {
-            // do not grant access if user couldn't be verified
-            return false;
-        }
-
-    }
-
 }

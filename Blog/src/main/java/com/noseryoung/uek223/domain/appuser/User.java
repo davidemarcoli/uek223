@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.UUID;
 
 @Entity(name="users")
-//from lombok
 @Getter@Setter
 @NoArgsConstructor @AllArgsConstructor
 public class User {

@@ -15,43 +15,41 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler;
 
-@EnableWebSecurity @RequiredArgsConstructor @EnableGlobalMethodSecurity(prePostEnabled = true)
+@EnableWebSecurity
+@RequiredArgsConstructor
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    private final UserDetailsService userDetailsService;
+    private final PasswordEncoder passwordEncoder;
 
- public class SecurityConfig extends WebSecurityConfigurerAdapter {
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
 
-     private final UserDetailsService userDetailsService;
-     private final PasswordEncoder passwordEncoder;
+    @Autowired
+    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    }
 
-     @Override
-     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
+    @Bean
+    public RoleHierarchy roleHierarchy() {
+        RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
+        String hierarchy = "ROLE_ADMIN > ROLE_AUTHOR \n ROLE_AUTHOR > ROLE_USER";
+        roleHierarchy.setHierarchy(hierarchy);
+        return roleHierarchy;
+    }
 
-     }
-
-     @Autowired
-     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-         auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder);
-     }
-
-     @Bean
-     public RoleHierarchy roleHierarchy() {
-         RoleHierarchyImpl roleHierarchy = new RoleHierarchyImpl();
-         String hierarchy = "ROLE_ADMIN > ROLE_AUTHOR \n ROLE_AUTHOR > ROLE_USER";
-         roleHierarchy.setHierarchy(hierarchy);
-         return roleHierarchy;
-     }
-
-     @Bean
-     public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
-         DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
-         expressionHandler.setRoleHierarchy(roleHierarchy());
-         return expressionHandler;
-     }
-
+    @Bean
+    public DefaultWebSecurityExpressionHandler webSecurityExpressionHandler() {
+        DefaultWebSecurityExpressionHandler expressionHandler = new DefaultWebSecurityExpressionHandler();
+        expressionHandler.setRoleHierarchy(roleHierarchy());
+        return expressionHandler;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-      http.csrf().disable().httpBasic().and()
+        http.csrf().disable().httpBasic().and()
                 .authorizeRequests()
                 // swagger
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
@@ -62,4 +60,4 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
                 // some more method calls
                 .formLogin();
     }
- }
+}

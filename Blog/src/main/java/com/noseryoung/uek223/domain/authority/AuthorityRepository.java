@@ -12,6 +12,7 @@ import java.util.UUID;
 public interface AuthorityRepository extends JpaRepository<Authority, UUID> {
     Authority findByName(String name);
 
+    //Used for assigning all authorities to the ADMIN
     @Query(value = "SELECT * FROM authority a WHERE a.name LIKE '%OWN%'",
             nativeQuery = true)
     List<Authority> findOwnAuthorities();
