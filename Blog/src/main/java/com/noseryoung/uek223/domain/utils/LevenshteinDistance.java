@@ -22,11 +22,11 @@ public class LevenshteinDistance {
                 if (str1Index == 0) {
                     replacementCosts[str1Index][str2Index] = str2Index;
 
-                // if str2Index == 0, the cost is the cost of adding all the characters of str1
+                    // if str2Index == 0, the cost is the cost of adding all the characters of str1
                 } else if (str2Index == 0) {
                     replacementCosts[str1Index][str2Index] = str1Index;
 
-                // if the characters at str1Index and str2Index are the same, the cost is the cost of the previous cell
+                    // if the characters at str1Index and str2Index are the same, the cost is the cost of the previous cell
                 } else {
                     replacementCosts[str1Index][str2Index] = min(replacementCosts[str1Index - 1][str2Index - 1]
                                     + costOfReplacement(str1.charAt(str1Index - 1), str2.charAt(str2Index - 1)),
@@ -40,7 +40,6 @@ public class LevenshteinDistance {
 
 
     /**
-     *
      * @param a the first character
      * @param b the second character
      * @return 1 if a != b, 0 otherwise
@@ -51,6 +50,7 @@ public class LevenshteinDistance {
 
     /**
      * Gets the minimum of the provided values
+     *
      * @param numbers the values to get the minimum of
      * @return the minimum of the provided values
      */

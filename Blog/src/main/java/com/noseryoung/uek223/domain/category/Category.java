@@ -14,7 +14,8 @@ import javax.validation.constraints.Size;
 import java.util.UUID;
 
 @Entity
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Category {

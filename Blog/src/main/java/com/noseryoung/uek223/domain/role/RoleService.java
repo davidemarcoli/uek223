@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 public interface RoleService {
-    void addAuthorityToRole( String rolename, String authorityname);
+    void addAuthorityToRole(String rolename, String authorityname);
 
     List<Role> findAll();
 

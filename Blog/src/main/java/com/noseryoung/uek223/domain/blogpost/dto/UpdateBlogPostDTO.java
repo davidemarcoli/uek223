@@ -9,7 +9,8 @@ import lombok.Setter;
 import javax.validation.constraints.Size;
 import java.util.Set;
 
-@Getter @Setter
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class UpdateBlogPostDTO {

@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import javax.management.InstanceAlreadyExistsException;
 import javax.management.InstanceNotFoundException;
 import javax.transaction.Transactional;
-
 import java.util.*;
 
 @Service
@@ -36,7 +35,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     private final String[] errorMessages = new String[]
-            {"User not found", "Email is not valid", "Username already exists"};
+            {"User not found", "Email is not valid", "Username already exists", "Email already exists"};
 
     @Override
 //    This method is used for security authentication, use caution when changing this
@@ -75,13 +74,17 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public User createUser(CreateUserDTO userDTO) throws InstanceAlreadyExistsException, InvalidEmailException {
-        if (!EmailValidator.getInstance().isValid(userDTO.getEmail())) {
+        if (! EmailValidator.getInstance().isValid(userDTO.getEmail())) {
             log.log(Level.WARN, errorMessages[1]);
             throw new InvalidEmailException(errorMessages[1]);
         }
         if (userRepository.findByUsername(userDTO.getUsername()) != null) {
             log.log(Level.WARN, errorMessages[2]);
             throw new InstanceAlreadyExistsException(errorMessages[2]);
+        }
+        if (userRepository.findByEmail(userDTO.getEmail()) != null) {
+            log.log(Level.WARN, errorMessages[3]);
+            throw new InstanceAlreadyExistsException(errorMessages[3]);
         }
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
 
@@ -95,7 +98,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Transactional
     @Override
     public User updateAndSaveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
-        if (!EmailValidator.getInstance().isValid(user.getEmail())) {
+        if (! EmailValidator.getInstance().isValid(user.getEmail())) {
             log.log(Level.WARN, errorMessages[1]);
             throw new InvalidEmailException(errorMessages[1]);
         }
@@ -103,11 +106,18 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         // check if it's already in use
         if (userRepository.findByUsername(user.getUsername()) != null &&  /* true = username maybe updated*/
                 /*true = username does not belong to updated profile */
-                !user.getUsername().equals(userRepository.findById(user.getId()).get().getUsername())) {
+                ! user.getUsername().equals(userRepository.findById(user.getId()).get().getUsername())) {
+            log.log(Level.WARN, errorMessages[2]);
             throw new InstanceAlreadyExistsException(errorMessages[2]);
         }
+        if (userRepository.findByEmail(user.getEmail()) != null &&  /* true = email maybe updated*/
+                /*true = email does not belong to updated profile */
+                ! user.getEmail().equals(userRepository.findById(user.getId()).get().getEmail())) {
+            log.log(Level.WARN, errorMessages[3]);
+            throw new InstanceAlreadyExistsException(errorMessages[3]);
+        }
         // If password is updated -> encrypt, else -> do nothing
-        if (!(passwordEncoder.matches(/* Maybe updated password */ user.getPassword(),
+        if (! (passwordEncoder.matches(/* Maybe updated password */ user.getPassword(),
                 /* Old password */ userRepository.findById(user.getId()).get().getPassword()))) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }

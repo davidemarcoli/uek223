@@ -1,7 +1,10 @@
 package com.noseryoung.uek223.domain.appuser;
 
 import com.noseryoung.uek223.domain.role.Role;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -9,9 +12,11 @@ import javax.validation.constraints.Size;
 import java.util.List;
 import java.util.UUID;
 
-@Entity(name="users")
-@Getter@Setter
-@NoArgsConstructor @AllArgsConstructor
+@Entity(name = "users")
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,7 +43,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(
                     name = "role_id", referencedColumnName = "id"))
     private List<Role> roles;
-
 
 
 }

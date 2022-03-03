@@ -13,9 +13,9 @@ public class CategoryDTOOnlyName {
     private String name;
 
     public void setName(String name) {
-        if (name.length() > 20)    {
-            this.name = name.substring(0,20) + "...";
-        }  else {
+        if (name.length() > 20) {
+            this.name = name.substring(0, 20) + "...";
+        } else {
             this.name = name;
         }
     }
