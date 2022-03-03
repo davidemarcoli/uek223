@@ -1,5 +1,6 @@
 package com.noseryoung.uek223.domain.blogpost;
 
+import com.noseryoung.uek223.domain.blogpost.dto.BlogPostDTO;
 import com.noseryoung.uek223.domain.blogpost.dto.BlogPostDTOPreview;
 import com.noseryoung.uek223.domain.blogpost.dto.UpdateBlogPostDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidObjectException;
@@ -41,9 +42,9 @@ public class BlogPostController {
 
     @Operation(summary = "Retrieves blogposts that are similar to the given title")
     @GetMapping("/")
-    public ResponseEntity<List<BlogPost>> getBlogPostByTitle(@Valid @RequestParam String title) {
+    public ResponseEntity<List<BlogPostDTO>> getBlogPostByTitle(@Valid @RequestParam String title) {
 
-        List<BlogPost> blogPosts = blogPostService.findByTitle(title);
+        List<BlogPostDTO> blogPosts = blogPostService.findByTitle(title);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("X-Total-Count", String.valueOf(blogPosts.size()));
