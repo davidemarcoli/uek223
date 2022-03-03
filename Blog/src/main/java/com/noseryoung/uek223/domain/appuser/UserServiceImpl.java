@@ -6,7 +6,9 @@ import com.noseryoung.uek223.domain.exceptions.NoAccessException;
 import com.noseryoung.uek223.domain.role.Role;
 import com.noseryoung.uek223.domain.role.RoleRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.validator.routines.EmailValidator;
+import org.apache.logging.log4j.Level;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
@@ -27,6 +29,7 @@ import java.util.*;
 @Service
 @RequiredArgsConstructor
 @Transactional
+@Log4j2
 public class UserServiceImpl implements UserService, UserDetailsService {
     @Autowired
     private final UserRepository userRepository;
@@ -71,11 +74,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public User saveUser(CreateUserDTO userDTO) throws InstanceAlreadyExistsException, InvalidEmailException {
+    public User createUser(CreateUserDTO userDTO) throws InstanceAlreadyExistsException, InvalidEmailException {
         if (!EmailValidator.getInstance().isValid(userDTO.getEmail())) {
+            log.log(Level.WARN, errorMessages[1]);
             throw new InvalidEmailException(errorMessages[1]);
         }
         if (userRepository.findByUsername(userDTO.getUsername()) != null) {
+            log.log(Level.WARN, errorMessages[2]);
             throw new InstanceAlreadyExistsException(errorMessages[2]);
         }
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
@@ -83,13 +88,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         //Set default role of every new user to USER
         User user = userMapper.userDTOsCreateToUser(userDTO);
         user.setRoles(List.of(roleRepository.findByName("USER")));
+        log.log(Level.INFO, "Attempting to create user");
         return userRepository.saveAndFlush(user);
     }
 
     @Transactional
     public User updateAndSaveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
         if (!EmailValidator.getInstance().isValid(user.getEmail())) {
-            throw new InvalidEmailException("Email is not valid");
+            log.log(Level.WARN, errorMessages[1]);
+            throw new InvalidEmailException(errorMessages[1]);
         }
         //When updating a user he needs the possibility to keep his username, but in case he changes it we need to
         // check if it's already in use
@@ -103,7 +110,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
                 /* Old password */ userRepository.findById(user.getId()).get().getPassword()))) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
-        return userRepository.save(user);
+        log.log(Level.INFO, "Attempting to save updated user");
+        return userRepository.saveAndFlush(user);
     }
 
     //TODO:Extract to roleservice
@@ -125,6 +133,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (hasAccess(id)) {
             return userRepository.findById(id);
         } else {
+            log.log(Level.INFO, "Access to user with id:" + id + " refused");
             throw new NoAccessException();
         }
     }
@@ -137,6 +146,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     @Override
     public void deleteUser(UUID id) throws NoAccessException {
         if (hasAccess(id)) {
+            log.log(Level.INFO, "Attempting to delete user");
             userRepository.deleteById(id);
         } else {
             throw new NoAccessException();
@@ -165,6 +175,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } catch (Exception e) {
             // do not grant access if user couldn't be found/verified to prevent giving a potential attacker
             // information
+            log.log(Level.INFO, "Refused access for user:" + id);
             return false;
         }
     }

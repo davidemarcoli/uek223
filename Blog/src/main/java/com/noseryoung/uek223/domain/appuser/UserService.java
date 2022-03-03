@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 public interface UserService {
-    User saveUser(CreateUserDTO user) throws InstanceAlreadyExistsException, InvalidEmailException;
+    User createUser(CreateUserDTO user) throws InstanceAlreadyExistsException, InvalidEmailException;
 
     Role saveRole(Role role);
 

@@ -15,6 +15,7 @@ import com.noseryoung.uek223.domain.utils.NullAwareBeanUtilsBean;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.Level;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -49,8 +50,10 @@ public class BlogPostServiceImpl implements BlogPostService {
         if (author.getRoles().contains(roleRepository.findByName("USER"))){
             author.getRoles().add(roleRepository.findByName("AUTHOR"));
             author.getRoles().remove(roleRepository.findByName("USER"));
+            log.log(Level.INFO, "Updated role from user " + author.getUsername() + " to AUTHOR");
         }
         blogPost.setAuthor(author);
+        log.log(Level.INFO, "Attempting to create blogpost");
         return blogPostRepository.saveAndFlush(blogPost);
     }
 
@@ -67,10 +70,14 @@ public class BlogPostServiceImpl implements BlogPostService {
                     nullAwareBeanUtilsBean.copyProperties(oldBlogPost, newBlogPost);
                 } catch (Exception e){
                     // Could be thrown if something goes wrong when copying the blogpost properties
-                    throw new InvalidObjectException("An unexpected error occurred. Please verify that the provided blogpost is valid!");
+                    log.log(Level.ERROR, "Something went wrong with copying blogposts: " +
+                            Arrays.toString(e.getStackTrace()));
+                    throw new InvalidObjectException("An unexpected error occurred. Please verify that the provided " +
+                            "blogpost is valid!");
                 }
                 return blogPostRepository.saveAndFlush(oldBlogPost);
             } else {
+                log.log(Level.WARN, "Refused access for user:" + id);
                 throw new NoAccessException();
             }
         } else {
@@ -130,8 +137,10 @@ public class BlogPostServiceImpl implements BlogPostService {
     public void deleteBlogPost(UUID id) throws NoAccessException, NoBlogPostFoundException {
         if (blogPostRepository.existsById(id)) {
             if (hasAccess(id)) {
+                log.log(Level.INFO, "Attempting to delete blogpost");
                 blogPostRepository.deleteById(id);
             } else {
+                log.log(Level.WARN, "Refused access for user:" + id);
                 throw new NoAccessException();
             }
         } else {

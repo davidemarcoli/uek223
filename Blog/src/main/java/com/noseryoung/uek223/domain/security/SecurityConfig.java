@@ -57,8 +57,6 @@ import org.springframework.security.web.access.expression.DefaultWebSecurityExpr
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
                 .antMatchers("/api/blog-post/**").permitAll()
                 .antMatchers("/api/user/**").permitAll()
-
-
                 .antMatchers("/api/**").hasRole("USER")
                 .and()
                 // some more method calls

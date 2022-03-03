@@ -49,7 +49,7 @@ public class UserController {
     @Operation(summary = "Creates and saves a new user to the database")
     @PostMapping("/")
     public ResponseEntity<User> createUser(@Valid @RequestBody CreateUserDTO user) throws InstanceAlreadyExistsException, InvalidEmailException {
-        return new ResponseEntity<>((userService.saveUser(user)), HttpStatus.CREATED);
+        return new ResponseEntity<>((userService.createUser(user)), HttpStatus.CREATED);
     }
 
     @Operation(summary = "Updates the existing user corresponding to the UUID and saves it to the database")
