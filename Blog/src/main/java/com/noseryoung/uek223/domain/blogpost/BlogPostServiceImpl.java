@@ -13,7 +13,6 @@ import com.noseryoung.uek223.domain.utils.LevenshteinResult;
 import com.noseryoung.uek223.domain.utils.MultiStopwatch;
 import com.noseryoung.uek223.domain.utils.NullAwareBeanUtilsBean;
 import lombok.RequiredArgsConstructor;
-import lombok.SneakyThrows;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Level;
 import org.springframework.data.domain.PageRequest;
@@ -55,14 +54,14 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @Override
-    public BlogPost updateBlogPost(UpdateBlogPostDTO blogPost, UUID id)
+    public BlogPost updateBlogPost(UpdateBlogPostDTO blogPost, UUID oldBlogPostId)
             throws NoAccessException, NoBlogPostFoundException, InvalidObjectException {
-        if (blogPostRepository.existsById(id)) {
-            if (hasAccess(id)) {
+        if (blogPostRepository.existsById(oldBlogPostId)) {
+            if (hasAccess(oldBlogPostId)) {
                 // Map updateBlogPost back to normal blogpost and try to copy unchangeable data from the old to the new
                 // blogpost
                 BlogPost newBlogPost = blogPostMapper.updateBlogPostDTOToBlog(blogPost);
-                BlogPost oldBlogPost = findById(id);
+                BlogPost oldBlogPost = findById(oldBlogPostId);
                 try {
                     nullAwareBeanUtilsBean.copyProperties(oldBlogPost, newBlogPost);
                 } catch (Exception e) {
@@ -72,9 +71,10 @@ public class BlogPostServiceImpl implements BlogPostService {
                     throw new InvalidObjectException("An unexpected error occurred. Please verify that the provided " +
                             "blogpost is valid!");
                 }
+                log.log(Level.INFO, "Attempting to save updated blogpost");
                 return blogPostRepository.saveAndFlush(oldBlogPost);
             } else {
-                log.log(Level.WARN, "Refused access for user:" + id);
+                log.log(Level.WARN, "Refused access for user:" + oldBlogPostId);
                 throw new NoAccessException();
             }
         } else {
@@ -127,7 +127,7 @@ public class BlogPostServiceImpl implements BlogPostService {
         if (validBlogPosts.isEmpty()) {
             throw new NoBlogPostFoundException("No BlogPost found with the given title");
         } else {
-            return blogPostMapper.blogToBlogDTOs(validBlogPosts);
+            return blogPostMapper.blogToBlogDTO(validBlogPosts);
         }
     }
 

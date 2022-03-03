@@ -7,13 +7,14 @@ import org.mapstruct.Mapper;
 
 @Mapper(componentModel = "spring")
 public interface UserMapper {
+    //Not sure if these are all needed, but we experienced flakiness without them.
     UserDTONoSensitive userToUserDtoNoSensitive(User user);
 
-    User userDtoToUserNoSensitive(UserDTONoSensitive userDto);
+    User userDTOToUserNoSensitive(UserDTONoSensitive userDto);
 
-    CreateUserDTO userToUserDTOsCreate(User user);
+    CreateUserDTO userToUserDTOCreate(User user);
 
-    User userDTOsCreateToUser(CreateUserDTO userDTO);
+    User userDTOCreateToUser(CreateUserDTO userDTO);
 
     UserDTOOnlyUsername userToUserDTOOnlyUsername(User user);
 

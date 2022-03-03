@@ -18,8 +18,8 @@ public class AuthorityServiceImpl implements AuthorityService {
     }
 
     @Override
-    public Authority updateAuthority(Authority authority, UUID id) {
-        authority.setId(id);
+    public Authority updateAuthority(Authority authority, UUID oldAuthorityId) {
+        authority.setId(oldAuthorityId);
         return authorityRepository.saveAndFlush(authority);
     }
 

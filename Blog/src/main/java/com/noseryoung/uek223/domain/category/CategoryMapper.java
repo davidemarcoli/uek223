@@ -7,5 +7,5 @@ import java.util.List;
 
 @Mapper(componentModel = "spring")
 public interface CategoryMapper {
-    List<CategoryDTOOnlyName> categoryToCategoryDTOsOnlyName(List<Category> categories);
+    List<CategoryDTOOnlyName> categoryToCategoryDTOOnlyName(List<Category> categories);
 }
