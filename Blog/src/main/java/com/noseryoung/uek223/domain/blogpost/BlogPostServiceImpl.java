@@ -25,6 +25,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
+import java.util.function.Consumer;
 
 @Service
 @RequiredArgsConstructor
@@ -40,8 +41,9 @@ public class BlogPostServiceImpl implements BlogPostService {
 
     @Override
     @SneakyThrows
-    @Transactional
+    @Transactional()
     public BlogPost createBlogPost(BlogPost blogPost) {
+        //Set author of blogpost to current user and update the role to AUTHOR if necessary
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User author = userRepository.findByUsername(auth.getName());
         if (author.getRoles().contains(roleRepository.findByName("USER"))){
@@ -53,14 +55,18 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @Override
+    @Transactional
     public BlogPost updateBlogPost(UpdateBlogPostDTO blogPost, UUID id) throws NoAccessException, NoBlogPostFoundException, InvalidObjectException {
         if (blogPostRepository.existsById(id)){
             if (hasAccess(id)){
+                // Map updateBlogPost back to normal blogpost and try to copy unchangeable data from the old to the new
+                // blogpost
                 BlogPost newBlogPost = blogPostMapper.updateBlogPostDTOToBlog(blogPost);
                 BlogPost oldBlogPost = findById(id);
                 try {
                     nullAwareBeanUtilsBean.copyProperties(oldBlogPost, newBlogPost);
                 } catch (Exception e){
+                    // Could be thrown if something goes wrong when copying the blogpost properties
                     throw new InvalidObjectException("An unexpected error occurred. Please verify that the provided blogpost is valid!");
                 }
                 return blogPostRepository.saveAndFlush(oldBlogPost);
@@ -68,6 +74,7 @@ public class BlogPostServiceImpl implements BlogPostService {
                 throw new NoAccessException();
             }
         } else {
+            // Since the BlogPosts do not hold sensitive information we can give this information to the user
             throw new NoBlogPostFoundException();
         }
     }
@@ -78,7 +85,7 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @Override
-    public List<BlogPost> findByTitle(String title) {
+    public List<BlogPost> findByTitle(String searchedTitle) {
 
         MultiStopwatch multiStopwatch = new MultiStopwatch();
 
@@ -86,13 +93,15 @@ public class BlogPostServiceImpl implements BlogPostService {
         List<LevenshteinResult> levenshteinDistances = new ArrayList<>();
 
         multiStopwatch.start();
+
+        // calculate levenshtein distance between every blog post and the searched string
         for (BlogPost blogPost : blogPosts) {
-            int levenshteinDistance = LevenshteinDistance.calculate(title.toUpperCase(), blogPost.getTitle().toUpperCase());
+            int levenshteinDistance = LevenshteinDistance.calculate(searchedTitle.toUpperCase(), blogPost.getTitle().toUpperCase());
             multiStopwatch.newTime();
             levenshteinDistances.add(new LevenshteinResult(blogPost, levenshteinDistance));
         }
 
-
+        // keep track of performance since it can use a lot of resources really fast
         log.info("Average Time per Calculation: " + multiStopwatch.getAverageTime());
 
         levenshteinDistances.sort(Comparator.comparing(LevenshteinResult::getDistance));
@@ -100,8 +109,10 @@ public class BlogPostServiceImpl implements BlogPostService {
         List<BlogPost> validBlogPosts = new ArrayList<>();
 
         levenshteinDistances.forEach(entry -> {
-            float difference = (float) entry.getDistance() / Math.max(title.length(), ((BlogPost) entry.getSource()).getTitle().length());
-
+            // calculate the difference in percent,
+            // based of the calculated distance and the length of either the blog title or the title searched for.
+            float difference = (float) entry.getDistance() / Math.max(searchedTitle.length(), ((BlogPost) entry.getSource()).getTitle().length());
+            // Retrieve all blogposts whose titles are at least 30% similar to the search string
             if (difference < 0.30f) {
                 validBlogPosts.add((BlogPost) entry.getSource());
             }
