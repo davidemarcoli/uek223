@@ -26,7 +26,7 @@ public class CategoryController {
     public ResponseEntity<List<CategoryDTOOnlyName>> findAllCategories
             (@PathVariable int page, @PathVariable int length) {
         return new ResponseEntity<>(
-                categoryMapper.categoryToCategoryDTOsOnlyName(categoryService.findAll(page, length)), HttpStatus.OK);
+                categoryMapper.categoryToCategoryDTOOnlyName(categoryService.findAll(page, length)), HttpStatus.OK);
     }
 
     @Operation(summary = "Retrieves the category with the corresponding UUID")

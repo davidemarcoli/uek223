@@ -39,9 +39,9 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     @SneakyThrows
-    public Role updateRole(UpdateRoleDTO role, UUID id) {
+    public Role updateRole(UpdateRoleDTO role, UUID oldRoleId) {
         Role newRole = roleMapper.updateRoleDTOToRole(role);
-        Role oldRole = roleRepository.findById(id).orElseThrow(()
+        Role oldRole = roleRepository.findById(oldRoleId).orElseThrow(()
                 -> new NoBlogPostFoundException("No Role found with the given id"));
 
         nullAwareBeanUtilsBean.copyProperties(oldRole, newRole);

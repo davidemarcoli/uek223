@@ -31,7 +31,7 @@ public class BlogPostController {
     public ResponseEntity<List<BlogPostDTOPreview>> findAllBlogPosts
             (@PathVariable int page, @PathVariable int length) {
         return new ResponseEntity<>
-                (blogPostMapper.blogToBlogDTOsPreview(blogPostService.findAll(page, length)), HttpStatus.OK);
+                (blogPostMapper.blogToBlogDTOPreview(blogPostService.findAll(page, length)), HttpStatus.OK);
     }
 
     @Operation(summary = "Retrieves the blogpost with the corresponding UUID")
