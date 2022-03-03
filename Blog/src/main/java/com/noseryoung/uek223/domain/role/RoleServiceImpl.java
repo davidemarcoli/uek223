@@ -14,17 +14,17 @@ import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
     private final RoleRepository roleRepository;
     private final AuthorityRepository authorityRepository;
     private final RoleMapper roleMapper;
     private final NullAwareBeanUtilsBean nullAwareBeanUtilsBean;
 
     @Override
-    public void addAuthorityToRole( String rolename, String authorityname){
-    Authority authority = authorityRepository.findByName(authorityname);
-    Role role = roleRepository.findByName(rolename);
-    role.getAuthorities().add(authority);
+    public void addAuthorityToRole(String rolename, String authorityname) {
+        Authority authority = authorityRepository.findByName(authorityname);
+        Role role = roleRepository.findByName(rolename);
+        role.getAuthorities().add(authority);
     }
 
     @Override
@@ -40,9 +40,9 @@ public class RoleServiceImpl implements RoleService{
     @Override
     @SneakyThrows
     public Role updateRole(UpdateRoleDTO role, UUID id) {
-
         Role newRole = roleMapper.updateRoleDTOToRole(role);
-        Role oldRole = roleRepository.findById(id).orElseThrow(() -> new NoBlogPostFoundException("No Role found with the given id"));
+        Role oldRole = roleRepository.findById(id).orElseThrow(()
+                -> new NoBlogPostFoundException("No Role found with the given id"));
 
         nullAwareBeanUtilsBean.copyProperties(oldRole, newRole);
 
@@ -52,6 +52,11 @@ public class RoleServiceImpl implements RoleService{
     @Override
     public void deleteRole(UUID id) {
         roleRepository.deleteById(id);
+    }
+
+    @Override
+    public Role findRoleById(UUID id) {
+        return roleRepository.findById(id).orElse(null);
     }
 }
 

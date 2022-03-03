@@ -15,11 +15,8 @@ import org.springframework.stereotype.Component;
 class AppStartupRunner implements ApplicationRunner {
 
     @Override
-    public void run(ApplicationArguments args) throws Exception {
-//        RUN YOUR STARTUP CODE HERE
-//        e.g. to add a user or role to the DB (only for testing)
+    public void run(ApplicationArguments args) {
         log.info("App started successfully");
-
     }
 }
 

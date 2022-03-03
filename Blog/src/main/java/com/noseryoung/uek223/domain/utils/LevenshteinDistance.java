@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class LevenshteinDistance {
 
     public static int calculate(String str1, String str2) {
-        int[][] dp = new int[str1.length() + 1][str2.length() + 1]; //TODO: what is dp? -> Naming
+        int[][] replacementCosts = new int[str1.length() + 1][str2.length() + 1];
 
         for (int str1Index = 0; str1Index <= str1.length(); str1Index++) {
 
@@ -20,24 +20,22 @@ public class LevenshteinDistance {
 
                 // if str1Index == 0, the cost is the cost of adding all the characters of str2
                 if (str1Index == 0) {
-                    dp[str1Index][str2Index] = str2Index;
+                    replacementCosts[str1Index][str2Index] = str2Index;
 
                 // if str2Index == 0, the cost is the cost of adding all the characters of str1
                 } else if (str2Index == 0) {
-                    dp[str1Index][str2Index] = str1Index;
+                    replacementCosts[str1Index][str2Index] = str1Index;
 
                 // if the characters at str1Index and str2Index are the same, the cost is the cost of the previous cell
                 } else {
-                    dp[str1Index][str2Index] = min(dp[str1Index - 1][str2Index - 1]
+                    replacementCosts[str1Index][str2Index] = min(replacementCosts[str1Index - 1][str2Index - 1]
                                     + costOfReplacement(str1.charAt(str1Index - 1), str2.charAt(str2Index - 1)),
-                            dp[str1Index - 1][str2Index] + 1,
-                            dp[str1Index][str2Index - 1] + 1);
+                            replacementCosts[str1Index - 1][str2Index] + 1,
+                            replacementCosts[str1Index][str2Index - 1] + 1);
                 }
-
             }
         }
-
-        return dp[str1.length()][str2.length()];
+        return replacementCosts[str1.length()][str2.length()];
     }
 
 
