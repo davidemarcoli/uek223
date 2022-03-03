@@ -12,7 +12,7 @@ import java.util.Arrays;
 public class LevenshteinDistance {
 
     public static int calculate(String str1, String str2) {
-        int[][] dp = new int[str1.length() + 1][str2.length() + 1];
+        int[][] dp = new int[str1.length() + 1][str2.length() + 1]; //TODO: what is dp? -> Naming
 
         for (int str1Index = 0; str1Index <= str1.length(); str1Index++) {
 

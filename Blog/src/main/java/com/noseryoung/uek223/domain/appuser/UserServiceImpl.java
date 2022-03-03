@@ -78,26 +78,29 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if (userRepository.findByUsername(userDTO.getUsername()) != null) {
             throw new InstanceAlreadyExistsException(errorMessages[2]);
         }
-
         userDTO.setPassword(passwordEncoder.encode(userDTO.getPassword()));
-        User user  = userMapper.userDTOsCreateToUser(userDTO);
+
+        //Set default role of every new user to USER
+        User user = userMapper.userDTOsCreateToUser(userDTO);
         user.setRoles(List.of(roleRepository.findByName("USER")));
-        return userRepository.save(user);
+        return userRepository.saveAndFlush(user);
     }
 
+    @Transactional
     public User updateAndSaveUser(User user) throws InstanceAlreadyExistsException, InvalidEmailException {
         if (!EmailValidator.getInstance().isValid(user.getEmail())) {
             throw new InvalidEmailException("Email is not valid");
         }
-
-        //When updating a user he needs the possibility to keep his username, but in case he changes it we need to check if it's already in use
-        if (userRepository.findByUsername(user.getUsername()) == null && // if true -> username is not updated - false its updated
-                !user.getUsername().equals(userRepository.findById(user.getId()).get().getUsername())){
-                    throw new InstanceAlreadyExistsException(errorMessages[2]);  // if new is same as old all good else not
+        //When updating a user he needs the possibility to keep his username, but in case he changes it we need to
+        // check if it's already in use
+        if (userRepository.findByUsername(user.getUsername()) != null &&  /* true = username maybe updated*/
+                /*true = username does not belong to updated profile */
+                !user.getUsername().equals(userRepository.findById(user.getId()).get().getUsername())) {
+            throw new InstanceAlreadyExistsException(errorMessages[2]);
         }
         // If password is updated -> encrypt, else -> do nothing
         if (!(passwordEncoder.matches(/* Maybe updated password */ user.getPassword(),
-                /* Old password */ userRepository.findById(user.getId()).get().getPassword()))){
+                /* Old password */ userRepository.findById(user.getId()).get().getPassword()))) {
             user.setPassword(passwordEncoder.encode(user.getPassword()));
         }
         return userRepository.save(user);
@@ -156,10 +159,12 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private boolean hasAccess(UUID id) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         try {
+            // if user is requesting his own profile return true
             return id.equals(userRepository.findByUsername(auth.getName()).getId()) ||
                     auth.getAuthorities().contains(new SimpleGrantedAuthority("ROLE_ADMIN"));
         } catch (Exception e) {
-            // do not grant access if user couldn't be found/verified
+            // do not grant access if user couldn't be found/verified to prevent giving a potential attacker
+            // information
             return false;
         }
     }
