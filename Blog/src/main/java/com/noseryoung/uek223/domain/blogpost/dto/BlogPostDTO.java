@@ -1,5 +1,7 @@
 package com.noseryoung.uek223.domain.blogpost.dto;
 
+import com.noseryoung.uek223.domain.appuser.User;
+import com.noseryoung.uek223.domain.appuser.dto.UserDTOOnlyUsername;
 import com.noseryoung.uek223.domain.category.dto.CategoryDTOOnlyName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,14 +15,12 @@ import java.util.Set;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class BlogPostDTOPreview {
+public class BlogPostDTO {
     private String title;
     private String content;
     private Set<CategoryDTOOnlyName> category;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
+    private UserDTOOnlyUsername author;
 
-    public void setContent(String content) {
-        this.content = content.substring(0, 30) + "...";
-    }
 }

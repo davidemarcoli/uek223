@@ -2,6 +2,7 @@ package com.noseryoung.uek223.domain.blogpost;
 
 import com.noseryoung.uek223.domain.appuser.User;
 import com.noseryoung.uek223.domain.appuser.UserRepository;
+import com.noseryoung.uek223.domain.blogpost.dto.BlogPostDTO;
 import com.noseryoung.uek223.domain.blogpost.dto.UpdateBlogPostDTO;
 import com.noseryoung.uek223.domain.exceptions.InvalidObjectException;
 import com.noseryoung.uek223.domain.exceptions.NoAccessException;
@@ -90,7 +91,7 @@ public class BlogPostServiceImpl implements BlogPostService {
     }
 
     @Override
-    public List<BlogPost> findByTitle(String searchedTitle) {
+    public List<BlogPostDTO> findByTitle(String searchedTitle) {
 
         MultiStopwatch multiStopwatch = new MultiStopwatch();
 
@@ -128,7 +129,7 @@ public class BlogPostServiceImpl implements BlogPostService {
         if (validBlogPosts.isEmpty()) {
             throw new NoBlogPostFoundException("No BlogPost found with the given title");
         } else {
-            return validBlogPosts;
+            return blogPostMapper.blogToBlogDTOs(validBlogPosts);
         }
     }
 
