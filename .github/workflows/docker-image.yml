@@ -31,7 +31,7 @@ jobs:
           distribution: 'adopt'
       - name: Test with Gradle
 
-        run: gradle clean build
+        run: cd Blog/ && gradle clean build
 
   deploy_to_heroku:
     name: Deploy to Heroku
