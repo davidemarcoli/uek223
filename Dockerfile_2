@@ -1,0 +1,15 @@
+FROM ubuntu
+ENV TZ=Europe/Zurich
+ARG DEBIAN_FRONTEND=noninteractive
+RUN apt update -y && apt install openjdk-16-jre wget unzip -y && mkdir /tmp/gradle
+WORKDIR /tmp/gradle
+#RUN wget https://downloads.gradle-dn.com/distributions/gradle-7.1-bin.zip && unzip -d /opt/gradle gradle-7.1-bin.zip && apt install apt-transport-https dirmngr software-properties-common -y && add-apt-repository ppa:cwchien/gradle && apt install gradle -y && apt clean 
+RUN apt install apt-transport-https dirmngr software-properties-common -y && add-apt-repository ppa:cwchien/gradle && apt install gradle=7.1 -y && apt clean 
+RUN mkdir /application
+WORKDIR /application
+COPY * ./
+RUN cd Blog/ && gradle build -x test
+#VOLUME /tmp
+#ARG JAR_FILE
+#COPY ${JAR_FILE} app.jar
+#ENTRYPOINT ["java","-jar","BUILD/LIBS/UEK223-PROJECT-1.0.0.jar"]
