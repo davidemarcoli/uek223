@@ -59,5 +59,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 // some more method calls
                 .formLogin();
+
+        http.headers().frameOptions().sameOrigin();
     }
 }
